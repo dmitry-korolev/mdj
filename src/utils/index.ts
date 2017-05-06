@@ -1,0 +1,6 @@
+export { curry } from './curry'
+export { clearSource } from './clearSource'
+export { startsWith } from './startsWith'
+export { matches } from './matches'
+export { last } from './last'
+export { equals } from './equals'

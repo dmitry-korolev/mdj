@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "module": "CommonJS",
+    "outDir": "lib",
+    "strict": true,
+    "target": "es2017",
+    "lib": ["dom", "es5", "es6", "es7", "scripthost"],
+    "paths": {
+      "*": [
+        "./*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "jsx": "react",
+    "importHelpers": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "test",
+    "node_modules"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": false,
+    "useBabel": false
+  }
+}
