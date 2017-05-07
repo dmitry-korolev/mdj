@@ -1,5 +1,0 @@
-export { isBlockquote } from './isBlockquote'
-export { isEmptyString } from './isEmptyString'
-export { isHeading } from './isHeading'
-export { isCodeBlock } from './isCodeBlock'
-export { isHR } from './isHR'

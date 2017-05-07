@@ -1,7 +1,7 @@
 import { expect } from 'chai'
-import { parseHeader } from './parseHeader'
+import { captureHeading } from './captureHeading'
 
-describe('parseHeader', () => {
+describe('captureHeading', () => {
   it('should return token', () => {
     const testCases = [
       {
@@ -32,7 +32,7 @@ describe('parseHeader', () => {
     ]
 
     testCases.forEach(({ input, output }) => {
-      expect(parseHeader(input)).to.eql({
+      expect(captureHeading(input)).to.eql({
         token: {
           type: 'heading',
           ...output

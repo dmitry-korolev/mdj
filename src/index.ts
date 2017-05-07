@@ -1,90 +1,76 @@
-import { clearSource, last } from 'utils'
-import { isBlockquote, isEmptyString, isHeading, isCodeBlock, isHR } from 'checkers'
-import { parseHeader, parseSpace, parseCodeBlock, parseHR } from 'parsers'
-import blockRules from 'rules/blockRules'
+import { clearSource } from 'utils'
+import {
+  captureNewLine,
+  captureCodeBlock,
+  captureHeading,
+  captureHR,
+  captureBlockquote,
+  captureTable
+} from 'parsers'
 
-import { NodeItem, NodeParagraph } from 'models'
+import { NodeItem, Parser, NodeBlockquote, Parsed } from 'models'
 
-const isParagraphToken = <(result: NodeItem) => result is NodeParagraph>(result => result.type === 'paragraph')
+const parsers: Parser[] = [
+  captureNewLine,
+  captureHeading,
+  captureHR,
+  captureBlockquote,
+  captureCodeBlock,
+  captureTable
+]
 
-const tokenize = (lines: string[]): NodeItem[] => {
+const isBlockquoteToken = <(result: NodeItem) => result is NodeBlockquote>(result => result.type === 'blockquote')
+
+const pinchToken = (source: string, isTop: boolean, isBlockquote: boolean): Parsed<NodeItem> | null => {
+  let token
+  let newSource = ''
+
+  for (let i = 0; i < parsers.length; i += 1) {
+    const parser = parsers[i]
+    const parsed = parser(source, isTop, isBlockquote)
+
+    if (!parsed) {
+      continue
+    }
+
+    newSource = parsed.newSource
+
+    if (parsed.inner && isBlockquoteToken(parsed.token)) {
+      parsed.token.children = tokenize(parsed.inner, isTop, true)
+    }
+
+    token = parsed.token
+    break
+  }
+
+  if (!token) {
+    return null
+  }
+
+  return {
+    token,
+    newSource
+  }
+}
+
+const tokenize = (input: string, isTop: boolean, isBlockquote: boolean): NodeItem[] => {
   const tokens: NodeItem[] = []
-  let currentLine = 0
+  let source = clearSource(input)
 
-  while (currentLine < lines.length) {
-    let line = lines[currentLine]
+  while (source.length > 0) {
+    const { token = null, newSource = '' } = pinchToken(source, isTop, isBlockquote) || {}
 
-    if (isEmptyString(line)) {
-      const { token } = parseSpace()
-      tokens.push(token)
-      currentLine += 1
-      continue
+    if (!token) {
+      throw new Error('Infinite loop on byte: ' + source.charCodeAt(0))
     }
 
-    if (isHeading(line)) {
-      const { token } = parseHeader(line)
-      tokens.push(token)
-      currentLine += 1
-      continue
-    }
-
-    if (isCodeBlock(line)) {
-      const { token, skip } = parseCodeBlock(lines, currentLine)
-      tokens.push(token)
-      currentLine += skip || 1
-      continue
-    }
-
-    if (isHR(line)) {
-      const { token } = parseHR()
-      tokens.push(token)
-      currentLine += 1
-      continue
-    }
-
-    if (isBlockquote(line)) {
-      const fullBlockquote = [line.replace(blockRules.blockquote, '')]
-      currentLine += 1
-
-      while (isBlockquote(lines[currentLine])) {
-        fullBlockquote.push(lines[currentLine].replace(blockRules.blockquote, ''))
-        currentLine += 1
-      }
-
-      tokens.push({
-        type: 'blockquote',
-        children: tokenize(fullBlockquote)
-      })
-      continue
-    }
-
-    if (tokens.length && isParagraphToken(last(tokens))) {
-      const token = last(tokens)
-      if (isParagraphToken(token)) {
-        token.children.push({
-          type: 'text',
-          value: line
-        })
-      }
-
-      currentLine += 1
-      continue
-    }
-
-    tokens.push({
-      type: 'paragraph',
-      children: [{
-        type: 'text',
-        value: line
-      }]
-    })
-
-    currentLine += 1
+    tokens.push(token)
+    source = newSource
   }
 
   return tokens
 }
 
-const lex = (input: string) => tokenize(clearSource(input).split('\n'))
+const lex = (input: string) => tokenize(clearSource(input), true, false)
 
 export { lex }

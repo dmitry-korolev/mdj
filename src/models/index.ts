@@ -4,7 +4,7 @@ export interface NodeSpace {
 
 export interface NodeText {
   type: 'text',
-  value: string
+  value: string,
 }
 
 export interface NodeHeading {
@@ -33,6 +33,13 @@ export interface NodeHR {
   type: 'hr'
 }
 
+export interface NodeTable {
+  type: 'table'
+  header: string[]
+  align: Array<string | null>
+  cells: string[][]
+}
+
 export type NodeItem =
   NodeSpace
   | NodeText
@@ -41,8 +48,12 @@ export type NodeItem =
   | NodeParagraph
   | NodeCodeBlock
   | NodeHR
+  | NodeTable
 
 export interface Parsed<T> {
-  token: T,
-  skip?: number
+  token: T
+  newSource: string
+  inner?: string
 }
+
+export type Parser = (source: string, isTop: boolean, isBlockquote: boolean) => Parsed<NodeItem> | null

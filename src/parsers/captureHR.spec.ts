@@ -1,9 +1,9 @@
 import { expect } from 'chai'
-import { parseHR } from './parseHR'
+import { captureHR } from './captureHR'
 
-describe('parseHR', () => {
+describe('captureHR', () => {
   it('should always return same result', () => {
-    expect(parseHR()).to.eql({
+    expect(captureHR('')).to.eql({
       token: { type: 'hr' }
     })
   })
