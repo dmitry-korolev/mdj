@@ -73,4 +73,4 @@ const tokenize = (input: string, isTop: boolean, isBlockquote: boolean): NodeIte
 
 const lex = (input: string) => tokenize(clearSource(input), true, false)
 
-export { lex }
+export default lex
