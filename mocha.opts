@@ -1,6 +1,5 @@
 --require ts-node/register
 --require tsconfig-paths/register
 --reporter list
---watch-extensions tsx,ts
-src/**/*.spec.tsx
+--watch-extensions ts
 src/**/*.spec.ts

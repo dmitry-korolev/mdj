@@ -1,13 +1,13 @@
 {
   "name": "gfm-json",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Markdown (GFM) to JSON converter",
   "main": "index.js",
   "scripts": {
     "test": "mocha --opts mocha.opts",
     "test:auto": "mocha --opts mocha.opts --watch",
     "build": "webpack",
-    "prepublish": "npm test && npm build",
+    "prepublish": "npm test && npm run build",
     "postpublish": "rm index.js"
   },
   "author": "Dmitry Korolev <dmitry@korolev.dk>",
