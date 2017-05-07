@@ -1,2 +1,2 @@
-## Markdown (GFM) to JSON compiler
+## MDJ - Markdown (GFM) to JSON compiler
 Work in progress

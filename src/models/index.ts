@@ -20,7 +20,7 @@ export interface NodeBlockquote {
 
 export interface NodeParagraph {
   type: 'paragraph'
-  children: NodeItem[]
+  value: string
 }
 
 export interface NodeCodeBlock {
