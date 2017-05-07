@@ -6,10 +6,10 @@ describe('captureNewLine', () => {
     expect(captureNewLine('')).to.be.null
     expect(captureNewLine('test')).be.null
     expect(captureNewLine('\n\n\n\ntest\n\n\n')).to.eql({
-      newSource: 'test\n\n\n',
       token: {
         type: 'space'
-      }
+      },
+      newSource: 'test\n\n\n'
     })
   })
 })

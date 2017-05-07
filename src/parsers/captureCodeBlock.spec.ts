@@ -1,15 +1,16 @@
 import { expect } from 'chai'
 import { captureCodeBlock } from './captureCodeBlock'
 
-xdescribe('captureCodeBlock', () => {
+describe('captureCodeBlock', () => {
   it('should parse code blocks', () => {
-    expect(captureCodeBlock('')).to.eql({
+    expect(captureCodeBlock('')).to.be.null
+    expect(captureCodeBlock('```js\ntest\n```\ntest')).to.eql({
       token: {
         type: 'codeblock',
         language: 'js',
-        value: 'asdsads\nasdsads\n12312\n\n\n123'
+        value: 'test'
       },
-      skip: 8
+      newSource: 'test'
     })
   })
 })

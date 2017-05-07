@@ -4,7 +4,7 @@ import blockRules from 'rules/blockRules'
 import { Parsed, NodeTable } from 'models'
 
 const rowSep = / *\| */
-const getTableHeader = (source: string): string[] => source.replace(/^ *| *\| *$/g, '').split(rowSep)
+const getTableHeader = (source: string): string[] => source.replace(/^ *| *\| *$/g, '').split(rowSep).map(item => item.trim())
 const getTableCell = (input: string): string[] => input.replace(/^ *\| *| *\| *$/g, '').split(rowSep)
 const getCellAlign = (input: string): string | null => {
   if (/^ *-+: *$/.test(input)) {
