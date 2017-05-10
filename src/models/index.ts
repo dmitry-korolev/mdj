@@ -4,7 +4,7 @@ export interface NodeSpace {
 
 export interface NodeText {
   type: 'text',
-  rawValue?: string
+  value?: string
 }
 
 export interface NodeHeading {
@@ -73,4 +73,4 @@ export interface Parsed<T> {
 
 // TODO: type tokenizer
 export type Tokenize = (source: string) => NodeItem[]
-export type Parser = (source: string, tokenizer: Tokenize) => Parsed<NodeItem> | null
+export type Parser = (source: string, blockLexer: Tokenize, inlineLexer?: Tokenize) => Parsed<NodeItem> | null

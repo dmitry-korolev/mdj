@@ -1,5 +1,4 @@
 import { exec, matches, replace } from 'utils'
-import blockRules from 'rules/blockRules'
 
 import { Parsed, NodeTable } from 'models'
 
@@ -26,8 +25,8 @@ const getCellAlign = (input: string): string | null => {
 }
 const getTableAlign = (source: string): Array<string | null> => removeRowBounds(source).split(rowSep).map(getCellAlign)
 
-const execNPTable = exec(blockRules.nptable)
-const execTableNormal = exec(blockRules.table)
+const execNPTable = exec(/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/)
+const execTableNormal = exec(/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/)
 
 const captureTable = (source: string): Parsed<NodeTable> | null => {
   let result = execNPTable(source)
