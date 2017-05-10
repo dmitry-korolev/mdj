@@ -7,7 +7,7 @@ This is a fork of [marked](https://github.com/chjj/marked/).
 import MDJ from 'mdj'
 import source from 'source.md'
 
-const mdj = new MDJ()
+const mdj = MDJ()
 const parsedSource = mdj.parse(source)
 ```
 
