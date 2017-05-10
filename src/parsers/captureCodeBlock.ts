@@ -1,9 +1,11 @@
-import { exec } from 'utils'
-import blockRules from 'rules/blockRules'
+import { exec, replace } from 'utils'
 
 import { Parsed, NodeCodeBlock } from 'models'
 
-const execCodeNormal = exec(blockRules.code)
+const execCodeNormal = exec(/^( {4}[^\n]+\n*)+/)
+const clearCode = replace(/^ {4}/gm, '')
+const execCodeFence = exec(/^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/)
+
 const captureCodeNormal = (source: string): Parsed<NodeCodeBlock> | null => {
   const [capture = ''] = execCodeNormal(source)
 
@@ -15,13 +17,12 @@ const captureCodeNormal = (source: string): Parsed<NodeCodeBlock> | null => {
     token: {
       type: 'codeblock',
       language: '',
-      value: capture.replace(/^ {4}/gm, '')
+      value: clearCode(capture)
     },
     newSource: source.substring(capture.length)
   }
 }
 
-const execCodeFence = exec(blockRules.fences)
 const captureCodeFence = (source: string): Parsed<NodeCodeBlock> | null => {
   const [capture = '', , language = '', value = ''] = execCodeFence(source)
 

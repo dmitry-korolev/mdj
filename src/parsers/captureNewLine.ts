@@ -1,9 +1,9 @@
 import { exec } from 'utils'
-import blockRules from 'rules/blockRules'
 
 import { Parsed, NodeSpace } from 'models'
 
-const execNewLine = exec(blockRules.newline)
+const execNewLine = exec(/^\n+/)
+
 const captureNewLine = (source: string): Parsed<NodeSpace> | null => {
   const [capture = ''] = execNewLine(source)
 

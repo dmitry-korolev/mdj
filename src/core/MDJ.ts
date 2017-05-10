@@ -6,43 +6,43 @@ import {
   captureHR,
   captureBlockquote,
   captureTable,
-  captureParagraph
+  captureParagraph,
+  captureList
 } from 'parsers'
 
-import { NodeBlockquote, NodeItem, Parsed, Parser } from 'models'
+import { NodeItem, Parsed, Parser } from 'models'
 
-const isBlockquoteToken = <(result: NodeItem) => result is NodeBlockquote>(result => result.type === 'blockquote')
 class MDJ {
   private blockParsers: { parser: Parser, priority: number }[] = []
 
   constructor() {
-    this.useBlockParser(captureNewLine, 1000)
-    this.useBlockParser(captureHeading, 900)
-    this.useBlockParser(captureHR, 800)
-    this.useBlockParser(captureBlockquote, 700)
-    this.useBlockParser(captureCodeBlock, 600)
-    this.useBlockParser(captureTable, 500)
-    this.useBlockParser(captureParagraph, 0)
+    this
+      .useBlockParser(captureNewLine, 1000)
+      .useBlockParser(captureHeading, 900)
+      .useBlockParser(captureHR, 800)
+      .useBlockParser(captureBlockquote, 700)
+      .useBlockParser(captureCodeBlock, 600)
+      .useBlockParser(captureTable, 500)
+      .useBlockParser(captureList, 400)
+      .useBlockParser(captureParagraph, 0)
+
+    this.tokenize = this.tokenize.bind(this)
+    this.pinchBlockToken = this.pinchBlockToken.bind(this)
   }
 
-  private pinchBlockToken(source: string, isTop: boolean, isBlockquote: boolean): Parsed<NodeItem> | null {
+  private pinchBlockToken(source: string): Parsed<NodeItem> | null {
     let token
     let newSource = ''
 
     for (let i = 0; i < this.blockParsers.length; i += 1) {
       const parser = this.blockParsers[i].parser
-      const parsed = parser(source, isTop, isBlockquote)
+      const parsed = parser(source, this.tokenize)
 
       if (!parsed) {
         continue
       }
 
       newSource = parsed.newSource
-
-      if (parsed.inner && isBlockquoteToken(parsed.token)) {
-        parsed.token.children = this.tokenize(parsed.inner, isTop, true)
-      }
-
       token = parsed.token
       break
     }
@@ -57,14 +57,14 @@ class MDJ {
     }
   }
 
-  private tokenize(input: string, isTop: boolean, isBlockquote: boolean): NodeItem[]  {
+  private tokenize(input: string): NodeItem[]  {
     const tokens: NodeItem[] = []
     let source = clearSource(input)
 
     while (source.length > 0) {
-      const { token = null, newSource = '' } = this.pinchBlockToken(source, isTop, isBlockquote) || {}
+      const { token = null, newSource = '' } = this.pinchBlockToken(source) || {}
 
-      if (!token) {
+      if (source === newSource || !token) {
         throw new Error('Infinite loop on byte: ' + source.charCodeAt(0))
       }
 
@@ -77,11 +77,12 @@ class MDJ {
 
   public useBlockParser(parser: Parser, priority: number = 500) {
     this.blockParsers.push({ parser, priority })
+    this.blockParsers = this.blockParsers.sort((a, b) => b.priority - a.priority)
+    return this
   }
 
   public parse(source: string) {
-    this.blockParsers = this.blockParsers.sort((a, b) => b.priority - a.priority)
-    return this.tokenize(source, true, false)
+    return this.tokenize(source)
   }
 }
 

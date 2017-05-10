@@ -1,11 +1,12 @@
 import { exec } from 'utils'
-import blockRules from 'rules/blockRules'
 
 import { Parsed, NodeHeading } from 'models'
 
-const execHeading = exec(blockRules.heading)
+const execHeading = exec(/^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/)
+const execLHeading = exec(/^([^\n]+)\n *([=-]){2,} *(?:\n+|$)/)
+
 const captureNormalHeading = (source: string): Parsed<NodeHeading> | null => {
-  const [capture = '', level = [], text = ''] = execHeading(source)
+  const [capture = '', level = [], rawValue = ''] = execHeading(source)
 
   if (!capture) {
     return null
@@ -15,15 +16,15 @@ const captureNormalHeading = (source: string): Parsed<NodeHeading> | null => {
     token: {
       type: 'heading',
       level: level.length,
-      value: text
+      rawValue,
+      children: []
     },
     newSource: source.substring(capture.length)
   }
 }
 
-const execLHeading = exec(blockRules.lheading)
 const captureLHeading = (source: string): Parsed<NodeHeading> | null => {
-  const [capture = '', value = '', level = ''] = execLHeading(source)
+  const [capture = '', rawValue = '', level = ''] = execLHeading(source)
 
   if (!capture) {
     return null
@@ -33,7 +34,8 @@ const captureLHeading = (source: string): Parsed<NodeHeading> | null => {
     token: {
       type: 'heading',
       level: level === '=' ? 1 : 2,
-      value
+      rawValue,
+      children: []
     },
     newSource: source.substring(capture.length)
   }

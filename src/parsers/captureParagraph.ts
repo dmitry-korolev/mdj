@@ -1,15 +1,12 @@
-import { exec } from 'utils'
-import blockRules from 'rules/blockRules'
+import { exec, replace } from 'utils'
 
 import { Parsed, NodeParagraph } from 'models'
 
-const execParagraph = exec(blockRules.paragraph)
-const captureParagraph = (source: string, isTop: boolean): Parsed<NodeParagraph> | null => {
-  if (!isTop) {
-    return null
-  }
+const execParagraph = exec(/^((?:[^\n]+\n?)+)\n*/)
+const removeLastLineBreak = replace(/\n$/, ' ')
 
-  const [capture = '', value = ''] = execParagraph(source)
+const captureParagraph = (source: string): Parsed<NodeParagraph> | null => {
+  const [capture = '', rawValue = ''] = execParagraph(source)
 
   if (!capture) {
     return null
@@ -18,7 +15,8 @@ const captureParagraph = (source: string, isTop: boolean): Parsed<NodeParagraph>
   return {
     token: {
       type: 'paragraph',
-      value: value.replace(/\n$/, '')
+      rawValue: removeLastLineBreak(rawValue),
+      children: []
     },
     newSource: source.substring(capture.length)
   }

@@ -1,32 +1,35 @@
-import { exec } from 'utils'
+import { exec, matches, replace } from 'utils'
 import blockRules from 'rules/blockRules'
 
 import { Parsed, NodeTable } from 'models'
 
 const rowSep = / *\| */
-const getTableHeader = (source: string): string[] => source.replace(/^ *| *\| *$/g, '').split(rowSep).map(item => item.trim())
-const getTableCell = (input: string): string[] => input.replace(/^ *\| *| *\| *$/g, '').split(rowSep)
+const removeHeaderBounds = replace(/^ *| *\| *$/g, '')
+const removeCellBounds = replace(/^ *\| *| *\| *$/g, '')
+const removeRowBounds = replace(/^ *|\| *$/g, '')
+const removeLastLineBreak = replace(/\n$/, ' ')
+const removeLastBounds = replace(/(?: *\| *)?\n$/, '')
+const splitByLineBreak = (input: string) => input.split('\n')
+const isRight = matches(/^ *-+: *$/)
+const isCenter = matches(/^ *:-+: *$/)
+
+const getTableHeader = (source: string): string[] => removeHeaderBounds(source).split(rowSep).map(item => item.trim())
+const getTableCell = (input: string): string[] => removeCellBounds(input).split(rowSep)
 const getCellAlign = (input: string): string | null => {
-  if (/^ *-+: *$/.test(input)) {
+  if (isRight(input)) {
     return 'right'
-  } else if (/^ *:-+: *$/.test(input)) {
+  } else if (isCenter(input)) {
     return 'center'
-  } else if (/^ *:-+ *$/.test(input)) {
-    return 'left'
   } else {
-    return null
+    return 'left'
   }
 }
-const getTableAlign = (source: string): Array<string | null> => source.replace(/^ *|\| *$/g, '').split(rowSep).map(getCellAlign)
+const getTableAlign = (source: string): Array<string | null> => removeRowBounds(source).split(rowSep).map(getCellAlign)
 
 const execNPTable = exec(blockRules.nptable)
 const execTableNormal = exec(blockRules.table)
 
-const captureTable = (source: string, isTop: boolean): Parsed<NodeTable> | null => {
-  if (!isTop) {
-    return null
-  }
-
+const captureTable = (source: string): Parsed<NodeTable> | null => {
   let result = execNPTable(source)
   let isNP = true
 
@@ -47,8 +50,8 @@ const captureTable = (source: string, isTop: boolean): Parsed<NodeTable> | null 
       header: getTableHeader(header),
       align: getTableAlign(align),
       cells: isNP ?
-        cells.replace(/\n$/, '').split('\n').map(item => item.split(rowSep)) :
-        cells.replace(/(?: *\| *)?\n$/, '').split('\n').map(getTableCell)
+        splitByLineBreak(removeLastLineBreak(cells)).map(item => item.split(rowSep)) :
+        splitByLineBreak(removeLastBounds(cells)).map(getTableCell)
     },
     newSource: source.substring(capture.length)
   }

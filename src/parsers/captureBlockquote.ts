@@ -1,10 +1,11 @@
-import { exec } from 'utils'
-import blockRules from 'rules/blockRules'
+import { exec, replace } from 'utils'
 
-import { Parsed, NodeBlockquote } from 'models'
+import { Parsed, NodeBlockquote, Tokenize } from 'models'
 
-const execBlockquote = exec(blockRules.blockquote)
-const captureBlockquote = (source: string): Parsed<NodeBlockquote> | null => {
+const execBlockquote = exec(/^( *>[^\n]+(\n(?! *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*\n*)+/)
+const clearBlockquote = replace(/^ *> ?/gm, '')
+
+const captureBlockquote = (source: string, tokenize: Tokenize): Parsed<NodeBlockquote> | null => {
   const [capture = ''] = execBlockquote(source)
 
   if (!capture) {
@@ -14,9 +15,8 @@ const captureBlockquote = (source: string): Parsed<NodeBlockquote> | null => {
   return {
     token: {
       type: 'blockquote',
-      children: []
+      children: tokenize(clearBlockquote(capture))
     },
-    inner: capture.replace(/^ *> ?/gm, ''),
     newSource: source.substring(capture.length)
   }
 }

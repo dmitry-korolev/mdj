@@ -4,13 +4,14 @@ export interface NodeSpace {
 
 export interface NodeText {
   type: 'text',
-  value: string,
+  rawValue?: string
 }
 
 export interface NodeHeading {
   type: 'heading'
   level: number
-  value: string
+  rawValue?: string
+  children: NodeItem[]
 }
 
 export interface NodeBlockquote {
@@ -20,13 +21,14 @@ export interface NodeBlockquote {
 
 export interface NodeParagraph {
   type: 'paragraph'
-  value: string
+  rawValue?: string
+  children: NodeItem[]
 }
 
 export interface NodeCodeBlock {
   type: 'codeblock'
   language: string
-  value: string
+  value?: string
 }
 
 export interface NodeHR {
@@ -40,6 +42,18 @@ export interface NodeTable {
   cells: string[][]
 }
 
+export interface NodeListItem {
+  type: 'listitem'
+  children: NodeItem[]
+}
+
+export interface NodeList {
+  type: 'list'
+  ordered: boolean
+  start: number | null
+  children: NodeListItem[]
+}
+
 export type NodeItem =
   NodeSpace
   | NodeText
@@ -49,11 +63,14 @@ export type NodeItem =
   | NodeCodeBlock
   | NodeHR
   | NodeTable
+  | NodeList
+  | NodeListItem
 
 export interface Parsed<T> {
   token: T
   newSource: string
-  inner?: string
 }
 
-export type Parser = (source: string, isTop: boolean, isBlockquote: boolean) => Parsed<NodeItem> | null
+// TODO: type tokenizer
+export type Tokenize = (source: string) => NodeItem[]
+export type Parser = (source: string, tokenizer: Tokenize) => Parsed<NodeItem> | null

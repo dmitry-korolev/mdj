@@ -1,9 +1,9 @@
 import { exec } from 'utils'
-import blockRules from 'rules/blockRules'
 
 import { Parsed, NodeHR } from 'models'
 
-const execHR = exec(blockRules.hr)
+const execHR = exec(/^ *(?:\*{3,}|-{3,}|_{3,}) *(?:\n+|$)/)
+
 const captureHR = (source: string): Parsed<NodeHR> | null => {
   const [capture = ''] = execHR(source)
 
