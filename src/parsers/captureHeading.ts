@@ -1,11 +1,15 @@
 import { exec } from 'utils'
 
-import { Parsed, NodeHeading } from 'models'
+import { Parsed, NodeHeading, Tokenizer } from 'models'
 
 const execHeading = exec(/^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/)
 const execLHeading = exec(/^([^\n]+)\n *([=-]){2,} *(?:\n+|$)/)
 
-const captureNormalHeading = (source: string): Parsed<NodeHeading> | null => {
+const captureNormalHeading = (source: string, inlineLexer: Tokenizer): Parsed<NodeHeading> | null => {
+  if (source[0] !== '#') {
+    return null
+  }
+
   const [capture = '', level = [], rawValue = ''] = execHeading(source)
 
   if (!capture) {
@@ -16,14 +20,13 @@ const captureNormalHeading = (source: string): Parsed<NodeHeading> | null => {
     token: {
       type: 'heading',
       level: level.length,
-      rawValue,
-      children: []
+      children: inlineLexer(rawValue)
     },
     newSource: source.substring(capture.length)
   }
 }
 
-const captureLHeading = (source: string): Parsed<NodeHeading> | null => {
+const captureLHeading = (source: string, inlineLexer: Tokenizer): Parsed<NodeHeading> | null => {
   const [capture = '', rawValue = '', level = ''] = execLHeading(source)
 
   if (!capture) {
@@ -34,15 +37,14 @@ const captureLHeading = (source: string): Parsed<NodeHeading> | null => {
     token: {
       type: 'heading',
       level: level === '=' ? 1 : 2,
-      rawValue,
-      children: []
+      children: inlineLexer(rawValue)
     },
     newSource: source.substring(capture.length)
   }
 }
 
-const captureHeading = (source: string): Parsed<NodeHeading> | null =>
-  captureNormalHeading(source) || captureLHeading(source)
+const captureHeading = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeHeading> | null =>
+  captureNormalHeading(source, inlineLexer) || captureLHeading(source, inlineLexer)
 
 
 export { captureHeading }

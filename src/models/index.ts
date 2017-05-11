@@ -3,14 +3,51 @@ export interface NodeSpace {
 }
 
 export interface NodeText {
-  type: 'text',
+  type: 'text'
   value?: string
+}
+
+export interface NodeStrong {
+  type: 'strong'
+  children: NodeItem[]
+}
+
+export interface NodeEm {
+  type: 'em'
+  children: NodeItem[]
+}
+
+export interface NodeStrikethrough {
+  type: 'strikethrough'
+  children: NodeItem[]
+}
+
+export interface NodeCode {
+  type: 'code'
+  value: string
+}
+
+export interface NodeLineBreak {
+  type: 'br'
+}
+
+export interface NodeLink {
+  type: 'link'
+  href: string
+  title?: string
+  children: NodeItem[]
+}
+
+export interface NodeImage {
+  type: 'image'
+  src: string
+  alt: string
+  title: string
 }
 
 export interface NodeHeading {
   type: 'heading'
   level: number
-  rawValue?: string
   children: NodeItem[]
 }
 
@@ -21,7 +58,6 @@ export interface NodeBlockquote {
 
 export interface NodeParagraph {
   type: 'paragraph'
-  rawValue?: string
   children: NodeItem[]
 }
 
@@ -39,7 +75,7 @@ export interface NodeTable {
   type: 'table'
   header: string[]
   align: Array<string | null>
-  cells: string[][]
+  cells: NodeItem[][]
 }
 
 export interface NodeListItem {
@@ -65,6 +101,13 @@ export type NodeItem =
   | NodeTable
   | NodeList
   | NodeListItem
+  | NodeLink
+  | NodeImage
+  | NodeStrong
+  | NodeEm
+  | NodeStrikethrough
+  | NodeCode
+  | NodeLineBreak
 
 export interface Parsed<T> {
   token: T
@@ -72,5 +115,5 @@ export interface Parsed<T> {
 }
 
 // TODO: type tokenizer
-export type Tokenize = (source: string) => NodeItem[]
-export type Parser = (source: string, blockLexer: Tokenize, inlineLexer?: Tokenize) => Parsed<NodeItem> | null
+export type Tokenizer = (source: string) => NodeItem[]
+export type Parser = (source: string, blockLexer: Tokenizer, inlineLexer?: Tokenizer) => Parsed<NodeItem> | null

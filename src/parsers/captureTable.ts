@@ -1,6 +1,6 @@
-import { exec, matches, replace } from 'utils'
+import { exec, matches, replace, compose, map, split } from 'utils'
 
-import { Parsed, NodeTable } from 'models'
+import { Parsed, NodeTable, Tokenizer, NodeItem } from 'models'
 
 const rowSep = / *\| */
 const removeHeaderBounds = replace(/^ *| *\| *$/g, '')
@@ -8,12 +8,12 @@ const removeCellBounds = replace(/^ *\| *| *\| *$/g, '')
 const removeRowBounds = replace(/^ *|\| *$/g, '')
 const removeLastLineBreak = replace(/\n$/, ' ')
 const removeLastBounds = replace(/(?: *\| *)?\n$/, '')
-const splitByLineBreak = (input: string) => input.split('\n')
+const splitByLineBreak = split('\n')
 const isRight = matches(/^ *-+: *$/)
 const isCenter = matches(/^ *:-+: *$/)
 
 const getTableHeader = (source: string): string[] => removeHeaderBounds(source).split(rowSep).map(item => item.trim())
-const getTableCell = (input: string): string[] => removeCellBounds(input).split(rowSep)
+const getTableRow = compose(split(rowSep), removeCellBounds)
 const getCellAlign = (input: string): string | null => {
   if (isRight(input)) {
     return 'right'
@@ -24,11 +24,15 @@ const getCellAlign = (input: string): string | null => {
   }
 }
 const getTableAlign = (source: string): Array<string | null> => removeRowBounds(source).split(rowSep).map(getCellAlign)
+const getNormalCells = (lexer: Tokenizer, cells: string): NodeItem[][] =>
+  compose(map(compose(map(lexer), getTableRow)), splitByLineBreak, removeLastBounds)(cells)
+const getNPCells = (lexer: Tokenizer, cells: string): NodeItem[][] =>
+  compose(map(compose(map(lexer), split(rowSep))), splitByLineBreak, removeLastLineBreak)(cells)
 
 const execNPTable = exec(/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/)
 const execTableNormal = exec(/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/)
 
-const captureTable = (source: string): Parsed<NodeTable> | null => {
+const captureTable = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeTable> | null => {
   let result = execNPTable(source)
   let isNP = true
 
@@ -48,9 +52,7 @@ const captureTable = (source: string): Parsed<NodeTable> | null => {
       type: 'table',
       header: getTableHeader(header),
       align: getTableAlign(align),
-      cells: isNP ?
-        splitByLineBreak(removeLastLineBreak(cells)).map(item => item.split(rowSep)) :
-        splitByLineBreak(removeLastBounds(cells)).map(getTableCell)
+      cells: isNP ? getNPCells(inlineLexer, cells) : getNormalCells(inlineLexer, cells)
     },
     newSource: source.substring(capture.length)
   }

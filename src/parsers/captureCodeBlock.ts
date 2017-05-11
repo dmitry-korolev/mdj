@@ -7,6 +7,10 @@ const clearCode = replace(/^ {4}/gm, '')
 const execCodeFence = exec(/^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/)
 
 const captureCodeNormal = (source: string): Parsed<NodeCodeBlock> | null => {
+  if (source[0] !== '`') {
+    return null
+  }
+
   const [capture = ''] = execCodeNormal(source)
 
   if (!capture) {

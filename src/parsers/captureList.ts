@@ -1,6 +1,6 @@
 import { exec, match, replace, compose } from 'utils'
 
-import { Parsed, NodeList, NodeListItem, Tokenize, NodeParagraph } from 'models'
+import { Parsed, NodeList, NodeListItem, Tokenizer, NodeParagraph } from 'models'
 import {  } from '../utils/match'
 
 const execList = exec(/^( *)((?:[*+-]|\d+\.)) [\s\S]+?(?:\n+(?=\1?(?:[-*_] *){3,}(?:\n+|$))|\n+(?= *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))|\n{2,}(?! )(?!\1(?:[*+-]|\d+\.) )\n*|\s*$)/)
@@ -10,7 +10,7 @@ const removeSpaces = replace(/^ */gm, '')
 const matchBullet = match(/^(\d)/)
 const precedeList = replace(/\n(?=\d*\. )/, '\n\n')
 
-const captureList = (source: string, tokenize: Tokenize): Parsed<NodeList> | null=> {
+const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | null=> {
   const [capture = '', , bull = ''] = execList(source)
 
   if (!capture) {

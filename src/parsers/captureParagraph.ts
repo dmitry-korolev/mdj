@@ -1,11 +1,11 @@
 import { exec, replace } from 'utils'
 
-import { Parsed, NodeParagraph } from 'models'
+import { Parsed, NodeParagraph, Tokenizer } from 'models'
 
 const execParagraph = exec(/^((?:[^\n]+\n?)+)\n*/)
 const removeLastLineBreak = replace(/\n$/, ' ')
 
-const captureParagraph = (source: string): Parsed<NodeParagraph> | null => {
+const captureParagraph = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeParagraph> | null => {
   const [capture = '', rawValue = ''] = execParagraph(source)
 
   if (!capture) {
@@ -15,8 +15,7 @@ const captureParagraph = (source: string): Parsed<NodeParagraph> | null => {
   return {
     token: {
       type: 'paragraph',
-      rawValue: removeLastLineBreak(rawValue),
-      children: []
+      children: inlineLexer(removeLastLineBreak(rawValue))
     },
     newSource: source.substring(capture.length)
   }

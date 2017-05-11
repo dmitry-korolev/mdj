@@ -1,17 +1,25 @@
 import { clearSource } from 'utils'
 import {
-  captureNewLine,
+  captureBlockquote,
   captureCodeBlock,
   captureHeading,
   captureHR,
-  captureBlockquote,
-  captureTable,
-  captureParagraph,
   captureList,
+  captureNewLine,
+  captureParagraph,
+  captureTable,
+
+  captureCode,
+  captureEm,
+  captureEscape,
+  captureLineBreak,
+  captureLinks,
+  captureStrikethrough,
+  captureStrong,
   captureText
 } from 'parsers'
 
-import { NodeItem, Parsed, Parser } from 'models'
+import { NodeItem, Parsed, Parser, Tokenizer } from 'models'
 
 type ParsersList = { parser: Parser, priority: number }[]
 
@@ -31,12 +39,19 @@ const MDJ = () => {
       { parser: captureParagraph, priority: 0 }
     ],
     inline: [
+      { parser: captureEscape, priority: 1000 },
+      { parser: captureCode, priority: 900 },
+      { parser: captureStrong, priority: 800 },
+      { parser: captureEm, priority: 700 },
+      { parser: captureStrikethrough, priority: 600 },
+      { parser: captureLinks, priority: 500 },
+      { parser: captureLineBreak, priority: 400 },
       { parser: captureText, priority: 0 }
     ]
   }
 
-  const blockLexer = lexer('block')
-  const inlineLexer = lexer('inline')
+  const blockLexer: Tokenizer = lexer('block')
+  const inlineLexer: Tokenizer = lexer('inline')
 
   function addParser (type: 'block' | 'inline', parser: Parser, priority: number) {
     parsers[type].push({parser, priority})
@@ -44,10 +59,11 @@ const MDJ = () => {
   }
 
   function pinchToken (type: 'block' | 'inline', source: string): Parsed<NodeItem> | null {
+    const l = parsers[type].length
     let token
     let newSource = ''
 
-    for (let i = 0; i < parsers[type].length; i += 1) {
+    for (let i = 0; i < l; i += 1) {
       const parser = parsers[type][i].parser
       const parsed = type === 'block' ?
         parser(source, blockLexer, inlineLexer) :

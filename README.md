@@ -30,3 +30,7 @@ mdj.useInlineParser(inlineParser, priority)
 Before parsing all parser rules are sorted by priority. You may check priorities of default parsers in the source (`./src/core/MDJ.ts`)
 
 Each parser receives one parameter - `source`, which is, basically, non-parsed part of the initial source. Parser should return null, if it did nothing, or an object, containing a new token, which will be added to JSON and a new source. See examples in `./src/parsers`.
+
+### Limitations
+Not supported: 
+1. Reference links 

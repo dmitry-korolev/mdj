@@ -2,7 +2,8 @@ import { exec } from 'utils'
 
 import { Parsed, NodeText } from 'models'
 
-const execText = exec(/^(?:.*|\n)+/)
+const execText = exec(/^[\s\S]+?(?=[\\<![_*`~]|https?:\/\/| *\n|$)/)
+
 const captureText = (source: string): Parsed<NodeText> | null => {
   const [capture = ''] = execText(source)
 
