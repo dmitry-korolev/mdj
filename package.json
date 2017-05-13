@@ -1,6 +1,6 @@
 {
   "name": "mdj",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Markdown (GFM) to JSON converter",
   "main": "index.js",
   "scripts": {
