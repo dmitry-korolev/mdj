@@ -75,7 +75,7 @@ export interface NodeTable {
   type: 'table'
   header: string[]
   align: Array<string | null>
-  cells: NodeItem[][]
+  cells: NodeItem[][][] // rows -> cells -> NodeItem[]
 }
 
 export interface NodeListItem {

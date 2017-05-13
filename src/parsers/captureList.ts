@@ -11,11 +11,14 @@ const matchBullet = match(/^(\d)/)
 const precedeList = replace(/\n(?=\d*\. )/, '\n\n')
 
 const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | null=> {
-  const [capture = '', , bull = ''] = execList(source)
+  const result = execList(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const bull = result[2]
 
   const parseChild = compose(tokenize, precedeList, removeSpaces, removeBullets)
   const topItemsParsed = matchItems(capture).map((item): NodeListItem => {

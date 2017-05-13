@@ -11,11 +11,13 @@ const captureCodeNormal = (source: string): Parsed<NodeCodeBlock> | null => {
     return null
   }
 
-  const [capture = ''] = execCodeNormal(source)
+  const result = execCodeNormal(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
 
   return {
     token: {
@@ -28,11 +30,15 @@ const captureCodeNormal = (source: string): Parsed<NodeCodeBlock> | null => {
 }
 
 const captureCodeFence = (source: string): Parsed<NodeCodeBlock> | null => {
-  const [capture = '', , language = '', value = ''] = execCodeFence(source)
+  const result = execCodeFence(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const language = result[2]
+  const value = result[3]
 
   return {
     token: {

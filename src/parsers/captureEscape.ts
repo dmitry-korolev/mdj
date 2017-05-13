@@ -8,11 +8,13 @@ const captureEscape = (source: string): Parsed<NodeText> | null => {
       return null
   }
 
-  const [capture = ''] = execEscape(source)
+  const result = execEscape(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
 
   return {
     token: {

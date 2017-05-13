@@ -4,17 +4,18 @@ import { Parsed, NodeBlockquote, Tokenizer, NodeParagraph } from 'models'
 
 const execBlockquote = exec(/^( *>[^\n]+(\n(?! *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*\n*)+/)
 const clearBlockquote = replace(/^ *> ?/gm, '')
-
 const captureBlockquote = (source: string, tokenize: Tokenizer): Parsed<NodeBlockquote> | null => {
   if (source[0] !== '>') {
     return null
   }
 
-  const [capture = ''] = execBlockquote(source)
+  const result = execBlockquote(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
 
   let children = tokenize(clearBlockquote(capture))
 

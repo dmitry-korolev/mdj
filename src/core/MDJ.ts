@@ -87,9 +87,8 @@ const MDJ = () => {
   }
 
   function lexer (type: 'block' | 'inline') {
-    return (input: string): NodeItem[] => {
+    return (source: string): NodeItem[] => {
       const tokens: NodeItem[] = []
-      let source = clearSource(input)
 
       while (source.length > 0) {
         const {token = null, newSource = ''} = pinchToken(type, source) || {}
@@ -108,7 +107,7 @@ const MDJ = () => {
 
   return {
     parse: function parse(source: string) {
-      return blockLexer(source)
+      return blockLexer(clearSource(source))
     },
     useInlineParser: function useInlineParser(parser: Parser, priority: number) {
       addParser('inline', parser, priority)

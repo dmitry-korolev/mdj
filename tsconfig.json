@@ -6,6 +6,7 @@
     "strict": true,
     "target": "es2017",
     "lib": ["dom", "es5", "es6", "es7", "scripthost"],
+    "allowJs": true,
     "paths": {
       "*": [
         "./*"

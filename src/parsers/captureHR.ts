@@ -5,11 +5,13 @@ import { Parsed, NodeHR } from 'models'
 const execHR = exec(/^ *(?:\*{3,}|-{3,}|_{3,}) *(?:\n+|$)/)
 
 const captureHR = (source: string): Parsed<NodeHR> | null => {
-  const [capture = ''] = execHR(source)
+  const result = execHR(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
 
   return {
     token: { type: 'hr' },

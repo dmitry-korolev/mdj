@@ -8,16 +8,19 @@ const captureStrikethrough = (source: string, inlineLexer: Tokenizer): Parsed<No
       return null
   }
 
-  const [capture = '', a = ''] = execStrikethrough(source)
+  const result = execStrikethrough(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const rawValue = result[1]
 
   return {
     token: {
       type: 'strikethrough',
-      children: inlineLexer(a)
+      children: inlineLexer(rawValue)
     },
     newSource: source.substring(capture.length)
   }

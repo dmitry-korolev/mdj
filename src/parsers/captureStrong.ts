@@ -8,11 +8,15 @@ const captureStrong = (source: string, inlineLexer: Tokenizer): Parsed<NodeStron
       return null
   }
 
-  const [capture = '', a = '', b = ''] = execStrong(source)
+  const result = execStrong(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const a = result[1]
+  const b = result[2]
 
   return {
     token: {

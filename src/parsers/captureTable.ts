@@ -24,9 +24,9 @@ const getCellAlign = (input: string): string | null => {
   }
 }
 const getTableAlign = (source: string): Array<string | null> => removeRowBounds(source).split(rowSep).map(getCellAlign)
-const getNormalCells = (lexer: Tokenizer, cells: string): NodeItem[][] =>
+const getNormalCells = (lexer: Tokenizer, cells: string): NodeItem[][][] =>
   compose(map(compose(map(lexer), getTableRow)), splitByLineBreak, removeLastBounds)(cells)
-const getNPCells = (lexer: Tokenizer, cells: string): NodeItem[][] =>
+const getNPCells = (lexer: Tokenizer, cells: string): NodeItem[][][] =>
   compose(map(compose(map(lexer), split(rowSep))), splitByLineBreak, removeLastLineBreak)(cells)
 
 const execNPTable = exec(/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/)
@@ -36,12 +36,19 @@ const captureTable = (source: string, _: any, inlineLexer: Tokenizer): Parsed<No
   let result = execNPTable(source)
   let isNP = true
 
-  if (!result.length) {
+  if (!result) {
     result = execTableNormal(source)
     isNP = false
   }
 
-  const [capture = '', header = '', align = '', cells = ''] = result
+  if (!result) {
+    return null
+  }
+
+  const capture = result[0]
+  const header = result[1]
+  const align = result[2]
+  const cells = result[3]
 
   if (!capture) {
     return null

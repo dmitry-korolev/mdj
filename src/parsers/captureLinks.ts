@@ -8,19 +8,22 @@ const captureAutolink = (source: string): Parsed<NodeLink> | null => {
     return null
   }
 
-  const [capture = '', _text = '', at = ''] = execAutolink(source)
-  let text = ''
-  let href = ''
+  const result = execAutolink(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
 
+  const capture = result[0]
+  const at = result[2]
+  let text = result[1]
+  let href = ''
+
+
   if (at === '@') {
-    text = _text.charAt(6) === ':' ? _text.substring(7) : _text
+    text = text.charAt(6) === ':' ? text.substring(7) : text
     href = 'mailto:' + text
   } else {
-    text = _text
     href = text
   }
 
@@ -46,11 +49,14 @@ const captureUrl = (source: string): Parsed<NodeLink> | null => {
     return null
   }
 
-  const [capture = '', text = ''] = execUrl(source)
+  const result = execUrl(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const text = result[1]
 
   return {
     token: {
@@ -74,12 +80,17 @@ const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | 
     return null
   }
 
-  const [capture = '', text = '', href = '', title = ''] = execLink(source)
+  const result = execLink(source)
   let token: NodeLink | NodeImage
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const text = result[1]
+  const href = result[2]
+  const title = result[3]
 
   if (text[0] === '!') {
     token = {

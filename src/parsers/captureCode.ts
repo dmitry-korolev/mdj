@@ -8,11 +8,14 @@ const captureCode = (source: string): Parsed<NodeCode> | null => {
       return null
   }
 
-  const [capture = '', , code = ''] = execCode(source)
+  const result = execCode(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const code = result[2]
 
   return {
     token: {

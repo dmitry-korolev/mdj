@@ -43,9 +43,21 @@ interface Curry {
   (fn: Function): Function
 }
 
-const curry: Curry =
-  (fn: any, argsA = []) =>
-    (...argsB: any[]) =>
-      (argsCombined => argsCombined.length >= fn.length ? fn(...argsCombined) : curry(fn, argsCombined))([...argsA, ...argsB])
+const curry: Curry = function() {
+  const fn: Function = arguments[0]
+  const length = fn.length
+
+  const inner = function() {
+    let args = Array.prototype.slice.call(arguments)
+
+    if (args.length >= length) {
+      return fn.apply(null, args)
+    } else {
+      return inner.bind.apply(inner, [null].concat(args))
+    }
+  }
+
+  return inner.bind.apply(inner, [null].concat(Array.prototype.slice.call(arguments, 1)))
+}
 
 export { curry }

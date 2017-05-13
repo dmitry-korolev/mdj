@@ -6,11 +6,14 @@ const execParagraph = exec(/^((?:[^\n]+\n?)+)\n*/)
 const removeLastLineBreak = replace(/\n$/, ' ')
 
 const captureParagraph = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeParagraph> | null => {
-  const [capture = '', rawValue = ''] = execParagraph(source)
+  const result = execParagraph(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const rawValue = result[1]
 
   return {
     token: {

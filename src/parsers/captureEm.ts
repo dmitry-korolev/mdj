@@ -8,11 +8,15 @@ const captureEm = (source: string, inlineLexer: Tokenizer): Parsed<NodeEm> | nul
       return null
   }
 
-  const [capture = '', a = '', b = ''] = execEm(source)
+  const result = execEm(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
+  const a = result[1]
+  const b = result[2]
 
   return {
     token: {

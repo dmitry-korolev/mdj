@@ -5,11 +5,13 @@ import { Parsed, NodeText } from 'models'
 const execText = exec(/^[\s\S]+?(?=[\\<![_*`~]|https?:\/\/| *\n|$)/)
 
 const captureText = (source: string): Parsed<NodeText> | null => {
-  const [capture = ''] = execText(source)
+  const result = execText(source)
 
-  if (!capture) {
+  if (!result) {
     return null
   }
+
+  const capture = result[0]
 
   return {
     token: {
