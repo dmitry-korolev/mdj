@@ -13,7 +13,7 @@ const getLevel = (input: string): number => {
 }
 
 const captureHeading = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeHeading> | null => {
-  const result = (source[0] !== '#' && execHeading(source)) || execLHeading(source)
+  const result = (source[0] === '#' && execHeading(source)) || execLHeading(source)
 
   if (!result) {
     return null

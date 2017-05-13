@@ -116,4 +116,4 @@ export interface Parsed<T> {
 
 // TODO: type tokenizer
 export type Tokenizer = (source: string) => NodeItem[]
-export type Parser = (source: string, blockLexer: Tokenizer, inlineLexer?: Tokenizer) => Parsed<NodeItem> | null
+export type Parser = (source: string, blockLexer?: Tokenizer, inlineLexer?: Tokenizer) => Parsed<NodeItem> | null

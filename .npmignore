@@ -1,8 +1,6 @@
+.idea
 /node_modules
-/src
 /test
-.babelrc
 mocha.opts
 tsconfig.json
-webpack.config.js
-.idea
+rollup.config.js

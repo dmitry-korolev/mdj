@@ -1,13 +1,14 @@
 {
   "name": "mdj",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Markdown (GFM) to JSON converter",
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "test": "mocha --opts mocha.opts",
     "test:auto": "mocha --opts mocha.opts --watch",
     "prebuild": "npm test",
-    "build": "webpack",
+    "build": "rollup -c",
     "prepublish": "npm run build",
     "postpublish": "rm index.js"
   },
@@ -33,18 +34,18 @@
     "@types/marked": "0.0.28",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.18",
-    "awesome-typescript-loader": "^3.1.3",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
-    "babel-preset-latest": "^6.24.1",
     "benchmark": "^2.1.4",
     "chai": "^3.5.0",
     "marked": "^0.3.6",
     "mocha": "^3.3.0",
+    "rollup": "^0.41.6",
+    "rollup-plugin-alias": "^1.3.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-ts": "^0.1.0",
+    "rollup-plugin-uglify": "^1.0.2",
     "ts-node": "^3.0.4",
     "tsconfig-paths": "^2.1.2",
     "tslib": "^1.7.0",
-    "typescript": "^2.3.2",
-    "webpack": "^2.5.1"
+    "typescript": "^2.3.2"
   }
 }
