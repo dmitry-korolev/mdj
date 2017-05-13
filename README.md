@@ -9,6 +9,12 @@ import source from 'source.md'
 
 const mdj = MDJ()
 const parsedSource = mdj.parse(source)
+
+// OR
+import { parse }  from 'mdj'
+import source from 'source.md'
+
+const parsedSource = parse(source) // Note that this is less performant.
 ```
 
 ### Adding new parser rules
@@ -31,6 +37,14 @@ Before parsing all parser rules are sorted by priority. You may check priorities
 
 Each parser receives one parameter - `source`, which is, basically, non-parsed part of the initial source. Parser should return null, if it did nothing, or an object, containing a new token, which will be added to JSON and a new source. See examples in `./src/parsers`.
 
-### Limitations
-Not supported: 
-1. Reference links 
+### TODO:
+Support:
+* [ ] Ref links
+* [ ] Def support
+* [ ] Optional html support
+* [ ] Checkboxes support
+
+Performance:
+* [ ] Add public benchmarks
+* [ ] Move to rollup
+* [ ] Try prepack.io (?)
