@@ -1,6 +1,6 @@
 {
   "name": "mdj",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Markdown (GFM) to JSON converter",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -9,8 +9,7 @@
     "test:auto": "mocha --opts mocha.opts --watch",
     "prebuild": "npm test",
     "build": "rollup -c",
-    "prepublish": "npm run build",
-    "postpublish": "rm index.js"
+    "prepublish": "npm run build"
   },
   "author": "Dmitry Korolev <dmitry@korolev.dk>",
   "license": "MIT",

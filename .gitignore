@@ -36,7 +36,3 @@ test
 # JetBrains
 .idea
 .awcache
-
-# Build files
-index.js
-index.js.map
