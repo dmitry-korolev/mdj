@@ -105,9 +105,13 @@ const MDJ = () => {
     }
   }
 
+  function prepareSource(source: string) {
+    return clearSource(source)
+  }
+
   return {
     parse: function parse(source: string) {
-      return blockLexer(clearSource(source))
+      return blockLexer(prepareSource(source))
     },
     useInlineParser: function useInlineParser(parser: Parser, priority: number) {
       addParser('inline', parser, priority)
