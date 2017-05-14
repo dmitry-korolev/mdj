@@ -1,6 +1,7 @@
 ## MDJ - Markdown (GFM) to JSON compiler
-Work in progress
-This is a fork of [marked](https://github.com/chjj/marked/).
+
+### Why
+I needed small, reasonably performant, extendable and reliable tool to convert Github Flavoured Markdown to JSON. Every small markdown parser, that I've found, couldn't generate JSON; every module, capable of generating JSON, is insanely bloated. Therefore I decided to make my own. This module is heavily based on [marked](https://github.com/chjj/marked/).
 
 ### Usage
 ```
@@ -33,15 +34,18 @@ mdj.useBlockParser(blockParser, priority)
 mdj.useInlineParser(inlineParser, priority)
 ```
 
-Before parsing all parser rules are sorted by priority. You may check priorities of default parsers in the source (`./src/core/MDJ.ts`)
+Before starting the parsing process all rules are sorted by priority. You may check priorities of default parsers in the source (`./src/core/MDJ.ts`)
 
 Each parser receives one parameter - `source`, which is, basically, non-parsed part of the initial source. Parser should return null, if it did nothing, or an object, containing a new token, which will be added to JSON and a new source. See examples in `./src/parsers`.
 
 ### TODO:
 Support:
 * [ ] Ref links
+* [ ] Def support
 * [ ] Optional html support
 * [ ] Checkboxes support
 
 Performance:
 * [ ] Add public benchmarks
+* [x] Move to rollup
+* [ ] Try prepack.io (?)
