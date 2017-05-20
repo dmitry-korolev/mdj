@@ -40,12 +40,11 @@ Each parser receives one parameter - `source`, which is, basically, non-parsed p
 
 ### TODO:
 Support:
-* [ ] Ref links
-* [ ] Def support
-* [ ] Optional html support
-* [ ] Checkboxes support
+* [ ] Reference links
+* [x] HTML
+* [ ] Checkbox lists
 
 Performance:
 * [ ] Add public benchmarks
 * [x] Move to rollup
-* [ ] Try prepack.io (?)
+* [x] Try prepack.io - tried, no benefit

@@ -1,0 +1,8 @@
+export { captureCode } from './captureCode'
+export { captureEm } from './captureEm'
+export { captureEscape } from './captureEscape'
+export { captureLineBreak } from './captureLinebreak'
+export { captureLinks } from './captureLinks'
+export { captureStrikethrough } from './captureStrikethrough'
+export { captureStrong } from './captureStrong'
+export { captureText } from './captureText'

@@ -90,24 +90,30 @@ export interface NodeList {
   children: NodeListItem[]
 }
 
+export interface NodeHTML {
+  type: 'html'
+  value: string
+}
+
 export type NodeItem =
-  NodeSpace
-  | NodeText
-  | NodeHeading
-  | NodeBlockquote
-  | NodeParagraph
-  | NodeCodeBlock
-  | NodeHR
-  | NodeTable
-  | NodeList
-  | NodeListItem
-  | NodeLink
-  | NodeImage
-  | NodeStrong
-  | NodeEm
-  | NodeStrikethrough
-  | NodeCode
-  | NodeLineBreak
+  NodeBlockquote |
+  NodeCode |
+  NodeCodeBlock |
+  NodeEm |
+  NodeHeading |
+  NodeHR |
+  NodeHTML |
+  NodeImage |
+  NodeLineBreak |
+  NodeLink |
+  NodeList |
+  NodeListItem |
+  NodeParagraph |
+  NodeSpace |
+  NodeStrikethrough |
+  NodeStrong |
+  NodeTable |
+  NodeText
 
 export interface Parsed<T> {
   token: T

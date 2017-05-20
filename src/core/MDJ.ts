@@ -4,11 +4,14 @@ import {
   captureCodeBlock,
   captureHeading,
   captureHR,
+  captureHTML,
   captureList,
   captureNewLine,
   captureParagraph,
-  captureTable,
+  captureTable
+} from 'blockParsers'
 
+import {
   captureCode,
   captureEm,
   captureEscape,
@@ -17,7 +20,7 @@ import {
   captureStrikethrough,
   captureStrong,
   captureText
-} from 'parsers'
+} from 'inlineParsers'
 
 import { NodeItem, Parsed, Parser, Tokenizer } from 'models'
 
@@ -36,6 +39,7 @@ const MDJ = () => {
       { parser: captureCodeBlock, priority: 600 },
       { parser: captureTable, priority: 500 },
       { parser: captureList, priority: 400 },
+      { parser: captureHTML, priority: 300 },
       { parser: captureParagraph, priority: 0 }
     ],
     inline: [
