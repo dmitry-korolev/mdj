@@ -1,7 +1,7 @@
 ## MDJ - Markdown (GFM) to JSON compiler
 
 ### Why
-I needed small, reasonably performant, extendable and reliable tool to convert Github Flavoured Markdown to JSON. Every small markdown parser, that I've found, couldn't generate JSON; every module, capable of generating JSON, is insanely bloated. Therefore I decided to make my own. This module is heavily based on [marked](https://github.com/chjj/marked/).
+I needed small, reasonably performant, extendable and reliable tool to convert Markdown ([GFM](https://guides.github.com/features/mastering-markdown/)) to JSON. Every small markdown parser, that I've found, couldn't generate JSON; every module, capable of generating JSON, is insanely bloated. Therefore I decided to make my own. This module is heavily based on [marked](https://github.com/chjj/marked/).
 
 ### Usage
 ```
@@ -38,7 +38,7 @@ Before starting the parsing process all rules are sorted by priority. You may ch
 
 Each parser receives one parameter - `source`, which is, basically, non-parsed part of the initial source. Parser should return null, if it did nothing, or an object, containing a new token, which will be added to JSON and a new source. See examples in `./src/parsers`.
 
-### TODO:
+### Roadmap to 1.0.0:
 Support:
 * [ ] Reference links
 * [x] HTML
