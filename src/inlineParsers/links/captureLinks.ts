@@ -19,7 +19,6 @@ const captureAutolink = (source: string): Parsed<NodeLink> | null => {
   let text = result[1]
   let href = ''
 
-
   if (at === '@') {
     text = text.charAt(6) === ':' ? text.substring(7) : text
     href = 'mailto:' + text
@@ -71,10 +70,22 @@ const captureUrl = (source: string): Parsed<NodeLink> | null => {
     },
     newSource: source.substring(capture.length)
   }
-
 }
 
-const execLink = exec(/^!?\[((?:\[[^\]]*\]|[^[\]]|\](?=[^[]*\]))*)\]\(\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*\)/)
+const execLink = exec(/^!?\[(.*)\]\((?:([\S]*) *["'](.*)["']\)|(.*)(?: *\)))/)
+const fixLink = (input: string) => {
+  let parenLevel = 0
+  let result = ''
+  for (let i = 0; i < input.length; i += 1) {
+    if (input[i] === ')' && parenLevel === 0) break
+    if (input[i] === '(') parenLevel++
+    if (input[i] === ')') parenLevel--
+    result = result + input[i]
+  }
+
+  return [result, input.substring(result.length)]
+}
+
 const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | NodeImage> | null => {
   if (source[0] !== '[' && source[0] !== '!') {
     return null
@@ -82,17 +93,17 @@ const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | 
 
   const result = execLink(source)
   let token: NodeLink | NodeImage
-
   if (!result) {
-    return null
+    return null  }
+
+  let capture = result[0];  const text = result[1];  let href = result[2];  const title = result[3]
+  if (result[4]) {
+    const fixedLink = fixLink(result[4])
+    href = fixedLink[0]
+    capture = fixedLink[1].length ? capture.slice(0, -fixedLink[1].length) : capture
   }
 
-  const capture = result[0]
-  const text = result[1]
-  const href = result[2]
-  const title = result[3]
-
-  if (text[0] === '!') {
+  if (capture[0] === '!') {
     token = {
       type: 'image',
       src: href,
@@ -114,9 +125,7 @@ const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | 
     token,
     newSource: source.substring(capture.length)
   }
-
 }
-
 const captureLinks = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | NodeImage> | null =>
   captureAutolink(source) || captureUrl(source) || captureLink(source, inlineLexer)
 

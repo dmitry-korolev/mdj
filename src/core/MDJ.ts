@@ -58,7 +58,7 @@ const MDJ = () => {
   const inlineLexer: Tokenizer = lexer('inline')
 
   function addParser (type: 'block' | 'inline', parser: Parser, priority: number) {
-    parsers[type].push({parser, priority})
+    parsers[type].push({ parser, priority })
     parsers[type] = parsers[type].sort((a, b) => b.priority - a.priority)
   }
 
@@ -95,7 +95,7 @@ const MDJ = () => {
       const tokens: NodeItem[] = []
 
       while (source.length > 0) {
-        const {token = null, newSource = ''} = pinchToken(type, source) || {}
+        const { token = null, newSource = '' } = pinchToken(type, source) || {}
 
         if (source === newSource || !token) {
           throw new Error('Infinite loop on byte: ' + source.charCodeAt(0))
@@ -109,19 +109,19 @@ const MDJ = () => {
     }
   }
 
-  function prepareSource(source: string) {
+  function prepareSource (source: string) {
     return clearSource(source)
   }
 
   return {
-    parse: function parse(source: string) {
+    parse: function parse (source: string) {
       return blockLexer(prepareSource(source))
     },
-    useInlineParser: function useInlineParser(parser: Parser, priority: number) {
+    useInlineParser: function useInlineParser (parser: Parser, priority: number) {
       addParser('inline', parser, priority)
       return this
     },
-    useBlockParser: function useBlockParser(parser: Parser, priority: number) {
+    useBlockParser: function useBlockParser (parser: Parser, priority: number) {
       addParser('block', parser, priority)
       return this
     }

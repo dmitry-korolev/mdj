@@ -16,7 +16,7 @@ const splitRow = (input: string) => {
   const result: string[] = []
   let cell = 0
 
-  for(let i = 0; i < input.length; i += 1) {
+  for (let i = 0; i < input.length; i += 1) {
     if (input[i] === '|' && input[i - 1] !== '`' && input[i - 1] !== '\\') {
       cell++
       continue
