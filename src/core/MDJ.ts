@@ -24,7 +24,7 @@ import {
 
 import { NodeItem, Parsed, Parser, Tokenizer } from 'models'
 
-type ParsersList = { parser: Parser, priority: number }[]
+type ParsersList = Array<{ parser: Parser, priority: number }>
 
 const MDJ = () => {
   const parsers: {

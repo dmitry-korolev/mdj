@@ -35,20 +35,20 @@ interface CurriedFunction6<T1, T2, T3, T4, T5, T6, R> {
 }
 
 interface Curry {
-  <T1, T2, TResult>(fn: (a: T1, b: T2) => TResult, args?: any): CurriedFunction2<T1,T2, TResult>
-  <T1, T2, T3, TResult>(fn: (a: T1, b: T2, c: T3) => TResult, args?: any): CurriedFunction3<T1,T2, T3, TResult>
-  <T1, T2, T3, T4, TResult>(fn: (a: T1, b: T2, c: T3, d: T4) => TResult, args?: any): CurriedFunction4<T1,T2, T3, T4, TResult>
-  <T1, T2, T3, T4, T5, TResult>(fn: (a: T1, b: T2, c: T3, d: T4, e: T5) => TResult, args?: any): CurriedFunction5<T1,T2, T3, T4, T5, TResult>
-  <T1, T2, T3, T4, T5, T6, TResult>(fn: (a: T1, b: T2, c: T3, d: T4, e: T5, f: T6) => TResult, args?: any): CurriedFunction6<T1,T2, T3, T4, T5, T6, TResult>
+  <T1, T2, TResult>(fn: (a: T1, b: T2) => TResult, args?: any): CurriedFunction2<T1, T2, TResult>
+  <T1, T2, T3, TResult>(fn: (a: T1, b: T2, c: T3) => TResult, args?: any): CurriedFunction3<T1, T2, T3, TResult>
+  <T1, T2, T3, T4, TResult>(fn: (a: T1, b: T2, c: T3, d: T4) => TResult, args?: any): CurriedFunction4<T1, T2, T3, T4, TResult>
+  <T1, T2, T3, T4, T5, TResult>(fn: (a: T1, b: T2, c: T3, d: T4, e: T5) => TResult, args?: any): CurriedFunction5<T1, T2, T3, T4, T5, TResult>
+  <T1, T2, T3, T4, T5, T6, TResult>(fn: (a: T1, b: T2, c: T3, d: T4, e: T5, f: T6) => TResult, args?: any): CurriedFunction6<T1, T2, T3, T4, T5, T6, TResult>
   (fn: Function): Function
 }
 
-const curry: Curry = function() {
+const curry: Curry = function () {
   const fn: Function = arguments[0]
   const length = fn.length
 
-  const inner = function() {
-    let args = Array.prototype.slice.call(arguments)
+  const inner = function () {
+    const args = Array.prototype.slice.call(arguments)
 
     if (args.length >= length) {
       return fn.apply(null, args)

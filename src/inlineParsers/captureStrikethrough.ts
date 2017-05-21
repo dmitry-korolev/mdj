@@ -5,7 +5,7 @@ import { NodeStrikethrough, Parsed, Tokenizer } from 'models'
 const execStrikethrough = exec(/^~~(?=\S)([\s\S]*?\S)~~/)
 const captureStrikethrough = (source: string, inlineLexer: Tokenizer): Parsed<NodeStrikethrough> | null => {
   if (source[0] !== '~') {
-      return null
+    return null
   }
 
   const result = execStrikethrough(source)

@@ -10,7 +10,7 @@ const removeSpaces = replace(/^ */gm, '')
 const matchBullet = match(/^(\d)/)
 const precedeList = replace(/\n(?=\d*\. )/, '\n\n')
 
-const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | null=> {
+const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | null => {
   const result = execList(source)
 
   if (!result) {

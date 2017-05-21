@@ -5,7 +5,7 @@ import { NodeCode, Parsed } from 'models'
 const execCode = exec(/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/)
 const captureCode = (source: string): Parsed<NodeCode> | null => {
   if (source[0] !== '`') {
-      return null
+    return null
   }
 
   const result = execCode(source)
