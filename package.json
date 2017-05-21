@@ -9,7 +9,8 @@
     "test:auto": "mocha --opts mocha.opts --watch",
     "prebuild": "npm test",
     "build": "rollup -c",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "lint": "tslint \"src/**/**.ts*\" --type-check --fix --project tsconfig.json --exclude=\"src/**/*.spec.ts*\""
   },
   "author": "Dmitry Korolev <dmitry@korolev.dk>",
   "license": "MIT",
@@ -45,6 +46,9 @@
     "ts-node": "^3.0.4",
     "tsconfig-paths": "^2.1.2",
     "tslib": "^1.7.0",
+    "tslint": "^5.2.0",
+    "tslint-config-standard": "^5.0.2",
+    "tslint-eslint-rules": "^4.0.0",
     "typescript": "^2.3.2"
   }
 }

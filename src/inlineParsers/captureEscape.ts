@@ -5,7 +5,7 @@ import { NodeText, Parsed } from 'models'
 const execEscape = exec(/^\\([\\`*{}[\]()#+\-.!_>~|])/)
 const captureEscape = (source: string): Parsed<NodeText> | null => {
   if (source[0] !== '\\') {
-      return null
+    return null
   }
 
   const result = execEscape(source)

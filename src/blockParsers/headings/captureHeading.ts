@@ -34,5 +34,4 @@ const captureHeading = (source: string, _: any, inlineLexer: Tokenizer): Parsed<
   }
 }
 
-
 export { captureHeading }
