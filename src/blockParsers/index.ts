@@ -1,5 +1,5 @@
 export { captureBlockquote } from './captureBlockquote'
-export { captureCodeBlock } from './captureCodeBlock'
+export { captureCodeBlock } from './code/captureCodeBlock'
 export { captureHeading } from './headings/captureHeading'
 export { captureHR } from './captureHR'
 export { captureHTML } from './html/captureHTML'

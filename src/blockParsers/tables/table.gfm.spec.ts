@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { MDJ } from 'core/MDJ'
 
-const { parse } = MDJ()
+const {parse} = MDJ()
 
 const gfmTable =
   `Markdown | Less | Pretty
@@ -13,58 +13,58 @@ describe('GFM table', () => {
   it('should parse GFM tables', () => {
     expect(parse(gfmTable)).to.eql([
       {
-        "type": "table",
-        "header": [
+        type: 'table',
+        header: [
           [
             {
-              "type": "text",
-              "value": "Markdown"
+              type: 'text',
+              value: 'Markdown'
             }
           ],
           [
             {
-              "type": "text",
-              "value": "Less"
+              type: 'text',
+              value: 'Less'
             }
           ],
           [
             {
-              "type": "text",
-              "value": "Pretty"
+              type: 'text',
+              value: 'Pretty'
             }
           ]
         ],
-        "align": [
-          "left",
-          "left",
-          "left"
+        align: [
+          'left',
+          'left',
+          'left'
         ],
-        "cells": [
+        cells: [
           [
             [
               {
-                "type": "em",
-                "children": [
+                type: 'em',
+                children: [
                   {
-                    "type": "text",
-                    "value": "Still"
+                    type: 'text',
+                    value: 'Still'
                   }
                 ]
               }
             ],
             [
               {
-                "type": "code",
-                "value": "renders"
+                type: 'code',
+                value: 'renders'
               }
             ],
             [
               {
-                "type": "strong",
-                "children": [
+                type: 'strong',
+                children: [
                   {
-                    "type": "text",
-                    "value": "nicely"
+                    type: 'text',
+                    value: 'nicely'
                   }
                 ]
               }
@@ -73,20 +73,20 @@ describe('GFM table', () => {
           [
             [
               {
-                "type": "text",
-                "value": "1"
+                type: 'text',
+                value: '1'
               }
             ],
             [
               {
-                "type": "text",
-                "value": "2"
+                type: 'text',
+                value: '2'
               }
             ],
             [
               {
-                "type": "text",
-                "value": "3"
+                type: 'text',
+                value: '3'
               }
             ]
           ]
