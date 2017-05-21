@@ -9,19 +9,20 @@ const getLevel = (input: string): number => {
     return input.length
   }
 
-  return input === '=' ? 1 : 2
+  return input[0] === '=' ? 1 : 2
 }
 
 const captureHeading = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeHeading> | null => {
-  const result = (source[0] === '#' && execHeading(source)) || execLHeading(source)
+  const isNormal = source[0] === '#'
+  const result = (isNormal && execHeading(source)) || execLHeading(source)
 
   if (!result) {
     return null
   }
 
   const capture = result[0]
-  const level = result[1]
-  const rawValue = result[2]
+  const level = isNormal ? result[1] : result[2]
+  const rawValue = isNormal ? result[2] : result[1]
 
   return {
     token: {
