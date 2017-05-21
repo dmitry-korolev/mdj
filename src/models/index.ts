@@ -1,125 +1,125 @@
-export interface NodeSpace {
+export interface INodeSpace {
   type: 'space'
 }
 
-export interface NodeText {
+export interface INodeText {
   type: 'text'
   value?: string
 }
 
-export interface NodeStrong {
+export interface INodeStrong {
   type: 'strong'
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeEm {
+export interface INodeEm {
   type: 'em'
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeStrikethrough {
+export interface INodeStrikethrough {
   type: 'strikethrough'
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeCode {
+export interface INodeCode {
   type: 'code'
   value: string
 }
 
-export interface NodeLineBreak {
+export interface INodeLineBreak {
   type: 'br'
 }
 
-export interface NodeLink {
+export interface INodeLink {
   type: 'link'
   href: string
   title?: string
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeImage {
+export interface INodeImage {
   type: 'image'
   src: string
   alt: string
   title?: string
 }
 
-export interface NodeHeading {
+export interface INodeHeading {
   type: 'heading'
   level: number
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeBlockquote {
+export interface INodeBlockquote {
   type: 'blockquote'
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeParagraph {
+export interface INodeParagraph {
   type: 'paragraph'
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeCodeBlock {
+export interface INodeCodeBlock {
   type: 'codeblock'
   language: string
   value?: string
 }
 
-export interface NodeHR {
+export interface INodeHR {
   type: 'hr'
 }
 
-export interface NodeTable {
+export interface INodeTable {
   type: 'table'
-  header: NodeItem[][]
+  header: INodeItem[][]
   align: Array<string | null>
-  cells: NodeItem[][][] // rows -> cells -> NodeItem[]
+  cells: INodeItem[][][] // rows -> cells -> INodeItem[]
 }
 
-export interface NodeListItem {
+export interface INodeListItem {
   type: 'listitem'
-  children: NodeItem[]
+  children: INodeItem[]
 }
 
-export interface NodeList {
+export interface INodeList {
   type: 'list'
   ordered: boolean
   start: number | null
-  children: NodeListItem[]
+  children: INodeListItem[]
 }
 
-export interface NodeHTML {
+export interface INodeHTML {
   type: 'html'
   value: string
 }
 
-export type NodeItem =
-  NodeBlockquote |
-  NodeCode |
-  NodeCodeBlock |
-  NodeEm |
-  NodeHeading |
-  NodeHR |
-  NodeHTML |
-  NodeImage |
-  NodeLineBreak |
-  NodeLink |
-  NodeList |
-  NodeListItem |
-  NodeParagraph |
-  NodeSpace |
-  NodeStrikethrough |
-  NodeStrong |
-  NodeTable |
-  NodeText
+export type INodeItem =
+  INodeBlockquote |
+  INodeCode |
+  INodeCodeBlock |
+  INodeEm |
+  INodeHeading |
+  INodeHR |
+  INodeHTML |
+  INodeImage |
+  INodeLineBreak |
+  INodeLink |
+  INodeList |
+  INodeListItem |
+  INodeParagraph |
+  INodeSpace |
+  INodeStrikethrough |
+  INodeStrong |
+  INodeTable |
+  INodeText
 
-export interface Parsed<T> {
+export interface IParsed<T> {
   token: T
   newSource: string
 }
 
 // TODO: type tokenizer
-export type Tokenizer = (source: string) => NodeItem[]
-export type Parser = (source: string, blockLexer?: Tokenizer, inlineLexer?: Tokenizer) => Parsed<NodeItem> | null
+export type ITokenizer = (source: string) => INodeItem[]
+export type IParser = (source: string, blockLexer?: ITokenizer, inlineLexer?: ITokenizer) => IParsed<INodeItem> | null

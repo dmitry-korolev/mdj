@@ -1,6 +1,6 @@
 import { exec } from 'utils'
 
-import { Parsed, NodeHeading, Tokenizer } from 'models'
+import { INodeHeading, IParsed, ITokenizer } from 'models'
 
 const execHeading = exec(/^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/)
 const execLHeading = exec(/^([^\n]+)\n *([=-]){2,} *(?:\n+|$)/)
@@ -12,7 +12,7 @@ const getLevel = (input: string): number => {
   return input[0] === '=' ? 1 : 2
 }
 
-const captureHeading = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeHeading> | null => {
+const captureHeading = (source: string, _: any, inlineLexer: ITokenizer): IParsed<INodeHeading> | null => {
   const isNormal = source[0] === '#'
   const result = (isNormal && execHeading(source)) || execLHeading(source)
 

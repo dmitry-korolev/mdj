@@ -1,9 +1,9 @@
 import { exec } from 'utils'
 
-import { NodeStrong, Parsed, Tokenizer } from 'models'
+import { INodeStrong, IParsed, ITokenizer } from 'models'
 
 const execStrong = exec(/^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/)
-const captureStrong = (source: string, inlineLexer: Tokenizer): Parsed<NodeStrong> | null => {
+const captureStrong = (source: string, inlineLexer: ITokenizer): IParsed<INodeStrong> | null => {
   if (source[0] !== '_' && source[0] !== '*') {
     return null
   }

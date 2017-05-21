@@ -1,10 +1,10 @@
 import { exec } from 'utils'
 
-import { Parsed, NodeText } from 'models'
+import { INodeText, IParsed } from 'models'
 
 const execText = exec(/^[\s\S]+?(?=[\\<![_*`~]|https?:\/\/| *\n|$)/)
 
-const captureText = (source: string): Parsed<NodeText> | null => {
+const captureText = (source: string): IParsed<INodeText> | null => {
   const result = execText(source)
 
   if (!result) {

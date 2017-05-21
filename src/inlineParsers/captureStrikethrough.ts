@@ -1,9 +1,9 @@
 import { exec } from 'utils'
 
-import { NodeStrikethrough, Parsed, Tokenizer } from 'models'
+import { INodeStrikethrough, IParsed, ITokenizer } from 'models'
 
 const execStrikethrough = exec(/^~~(?=\S)([\s\S]*?\S)~~/)
-const captureStrikethrough = (source: string, inlineLexer: Tokenizer): Parsed<NodeStrikethrough> | null => {
+const captureStrikethrough = (source: string, inlineLexer: ITokenizer): IParsed<INodeStrikethrough> | null => {
   if (source[0] !== '~') {
     return null
   }

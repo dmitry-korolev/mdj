@@ -1,11 +1,11 @@
 import { curry } from 'utils'
 
-interface Map {
+interface IMap {
   <V, R>(fn: (x0: V, x1: number, x2: V[]) => R): (input: V[]) => R[]
   <V, R>(fn: (x0: V, x1: number, x2: V[]) => R, input: V[]): R[]
 }
 
-const map: Map = curry(<V, R>(fn: (x0: V, x1: number, x2: V[]) => R , input: V[]) => {
+const map: IMap = curry(<V, R>(fn: (x0: V, x1: number, x2: V[]) => R , input: V[]) => {
   const result = new Array(input.length)
 
   for (let i = 0; i < input.length; i += 1) {

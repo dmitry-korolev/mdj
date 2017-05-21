@@ -1,4 +1,3 @@
-import { clearSource } from 'utils'
 import {
   captureBlockquote,
   captureCodeBlock,
@@ -10,6 +9,7 @@ import {
   captureParagraph,
   captureTable
 } from 'blockParsers'
+import { clearSource } from 'utils'
 
 import {
   captureCode,
@@ -22,9 +22,9 @@ import {
   captureText
 } from 'inlineParsers'
 
-import { NodeItem, Parsed, Parser, Tokenizer } from 'models'
+import { INodeItem, IParsed, IParser, ITokenizer } from 'models'
 
-type ParsersList = Array<{ parser: Parser, priority: number }>
+type ParsersList = Array<{ parser: IParser, priority: number }>
 
 const MDJ = () => {
   const parsers: {
@@ -54,15 +54,15 @@ const MDJ = () => {
     ]
   }
 
-  const blockLexer: Tokenizer = lexer('block')
-  const inlineLexer: Tokenizer = lexer('inline')
+  const blockLexer: ITokenizer = lexer('block')
+  const inlineLexer: ITokenizer = lexer('inline')
 
-  function addParser (type: 'block' | 'inline', parser: Parser, priority: number) {
+  function addParser (type: 'block' | 'inline', parser: IParser, priority: number) {
     parsers[type].push({ parser, priority })
     parsers[type] = parsers[type].sort((a, b) => b.priority - a.priority)
   }
 
-  function pinchToken (type: 'block' | 'inline', source: string): Parsed<NodeItem> | null {
+  function pinchToken (type: 'block' | 'inline', source: string): IParsed<INodeItem> | null {
     const l = parsers[type].length
     let token
     let newSource = ''
@@ -91,8 +91,8 @@ const MDJ = () => {
   }
 
   function lexer (type: 'block' | 'inline') {
-    return (source: string): NodeItem[] => {
-      const tokens: NodeItem[] = []
+    return (source: string): INodeItem[] => {
+      const tokens: INodeItem[] = []
 
       while (source.length > 0) {
         const { token = null, newSource = '' } = pinchToken(type, source) || {}
@@ -113,19 +113,21 @@ const MDJ = () => {
     return clearSource(source)
   }
 
-  return {
+  const parser = {
     parse: function parse (source: string) {
       return blockLexer(prepareSource(source))
     },
-    useInlineParser: function useInlineParser (parser: Parser, priority: number) {
-      addParser('inline', parser, priority)
-      return this
+    useInlineParser: function useInlineParser (parserFunc: IParser, priority: number) {
+      addParser('inline', parserFunc, priority)
+      return parser
     },
-    useBlockParser: function useBlockParser (parser: Parser, priority: number) {
-      addParser('block', parser, priority)
-      return this
+    useBlockParser: function useBlockParser (parserFunc: IParser, priority: number) {
+      addParser('block', parserFunc, priority)
+      return parser
     }
   }
+
+  return parser
 }
 
 export { MDJ }

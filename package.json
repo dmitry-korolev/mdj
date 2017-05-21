@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha --opts mocha.opts",
     "test:auto": "mocha --opts mocha.opts --watch",
-    "prebuild": "npm test",
+    "prebuild": "npm run lint && npm test",
     "build": "rollup -c",
     "prepublish": "npm run build",
     "lint": "tslint \"src/**/**.ts*\" --type-check --fix --project tsconfig.json --exclude=\"src/**/*.spec.ts*\""

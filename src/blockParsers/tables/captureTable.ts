@@ -1,6 +1,6 @@
-import { exec, matches, replace, compose, map, split, trim } from 'utils'
+import { compose, exec, map, matches, replace, split, trim } from 'utils'
 
-import { Parsed, NodeTable, Tokenizer, NodeItem } from 'models'
+import { INodeItem, INodeTable, IParsed, ITokenizer } from 'models'
 
 const rowSep = / *\| */
 const removeHeaderBounds = replace(/^ *| *\| *$/g, '')
@@ -27,7 +27,7 @@ const splitRow = (input: string) => {
   return map(trim, result)
 }
 
-const getTableHeader = (lexer: Tokenizer, source: string): NodeItem[][] =>
+const getTableHeader = (lexer: ITokenizer, source: string): INodeItem[][] =>
   compose(map(lexer), splitRow, removeHeaderBounds)(source)
 const getTableRow = compose(splitRow, removeCellBounds)
 const getCellAlign = (input: string): string | null => {
@@ -40,15 +40,15 @@ const getCellAlign = (input: string): string | null => {
   }
 }
 const getTableAlign = compose(map(getCellAlign), split(rowSep), removeRowBounds)
-const getNormalCells = (lexer: Tokenizer, cells: string): NodeItem[][][] =>
+const getNormalCells = (lexer: ITokenizer, cells: string): INodeItem[][][] =>
   compose(map(compose(map(lexer), getTableRow)), splitByLineBreak, removeLastBounds)(cells)
-const getNPCells = (lexer: Tokenizer, cells: string): NodeItem[][][] =>
+const getNPCells = (lexer: ITokenizer, cells: string): INodeItem[][][] =>
   compose(map(compose(map(lexer), split(rowSep))), splitByLineBreak, removeLastLineBreak)(cells)
 
 const execNPTable = exec(/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/)
 const execTableNormal = exec(/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/)
 
-const captureTable = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeTable> | null => {
+const captureTable = (source: string, _: any, inlineLexer: ITokenizer): IParsed<INodeTable> | null => {
   let result = execNPTable(source)
   let isNP = true
 

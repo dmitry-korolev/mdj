@@ -1,11 +1,11 @@
 import { exec, replace } from 'utils'
 
-import { Parsed, NodeParagraph, Tokenizer } from 'models'
+import { INodeParagraph, IParsed, ITokenizer } from 'models'
 
 const execParagraph = exec(/^((?:[^\n]+\n?)+)\n*/)
 const removeLastLineBreak = replace(/\n$/, ' ')
 
-const captureParagraph = (source: string, _: any, inlineLexer: Tokenizer): Parsed<NodeParagraph> | null => {
+const captureParagraph = (source: string, _: any, inlineLexer: ITokenizer): IParsed<INodeParagraph> | null => {
   const result = execParagraph(source)
 
   if (!result) {

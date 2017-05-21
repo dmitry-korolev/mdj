@@ -1,16 +1,15 @@
-import { exec, match, replace, compose } from 'utils'
+import { compose, exec, match, replace } from 'utils'
 
-import { Parsed, NodeList, NodeListItem, Tokenizer, NodeParagraph } from 'models'
-import {  } from '../utils/match'
+import { INodeList, INodeListItem, INodeParagraph, IParsed, ITokenizer } from 'models'
 
-const execList = exec(/^( *)((?:[*+-]|\d+\.)) [\s\S]+?(?:\n+(?=\1?(?:[-*_] *){3,}(?:\n+|$))|\n+(?= *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))|\n{2,}(?! )(?!\1(?:[*+-]|\d+\.) )\n*|\s*$)/)
+const execList = exec(/^( *)((?:[*+-]|\d+\.)) [\s\S]+?(?:\n+(?=\1?(?:[-*_] *){3,}(?:\n+|$))|\n+(?= *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))|\n{2,}(?! )(?!\1(?:[*+-]|\d+\.) )\n*|\s*$)/) // tslint:disable-line max-line-length
 const matchItems = match(/^( *)((?:[*+-]|\d+\.)) [^\n]*(?:\n(?!\1(?:[*+-]|\d+\.) )[^\n]*)*/gm)
 const removeBullets = replace(/^ *([*+-]|\d+\.) +/, '')
 const removeSpaces = replace(/^ */gm, '')
 const matchBullet = match(/^(\d)/)
 const precedeList = replace(/\n(?=\d*\. )/, '\n\n')
 
-const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | null => {
+const captureList = (source: string, tokenize: ITokenizer): IParsed<INodeList> | null => {
   const result = execList(source)
 
   if (!result) {
@@ -21,11 +20,11 @@ const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | nu
   const bull = result[2]
 
   const parseChild = compose(tokenize, precedeList, removeSpaces, removeBullets)
-  const topItemsParsed = matchItems(capture).map((item): NodeListItem => {
+  const topItemsParsed = matchItems(capture).map((item): INodeListItem => {
     let itemChildren = parseChild(item)
 
     if (itemChildren.length === 1 && itemChildren[0].type === 'paragraph') {
-      itemChildren = (itemChildren[0] as NodeParagraph).children
+      itemChildren = (itemChildren[0] as INodeParagraph).children
     }
 
     return {
@@ -35,7 +34,7 @@ const captureList = (source: string, tokenize: Tokenizer): Parsed<NodeList> | nu
   })
 
   const startToken = matchBullet(bull)
-  const token: NodeList = {
+  const token: INodeList = {
     type: 'list',
     ordered: !!startToken,
     start: startToken && +startToken[1],

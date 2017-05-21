@@ -1,10 +1,10 @@
 import { exec } from 'utils'
 
-import { Parsed, NodeSpace } from 'models'
+import { INodeSpace, IParsed } from 'models'
 
 const execNewLine = exec(/^\n+/)
 
-const captureNewLine = (source: string): Parsed<NodeSpace> | null => {
+const captureNewLine = (source: string): IParsed<INodeSpace> | null => {
   const result = execNewLine(source)
 
   if (!result) {

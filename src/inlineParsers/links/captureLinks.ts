@@ -1,9 +1,9 @@
 import { exec, matches } from 'utils'
 
-import { Parsed, NodeLink, Tokenizer, NodeImage } from 'models'
+import { INodeImage, INodeLink, IParsed, ITokenizer } from 'models'
 
 const execAutolink = exec(/^<([^ >]+(@|:\/)[^ >]+)>/)
-const captureAutolink = (source: string): Parsed<NodeLink> | null => {
+const captureAutolink = (source: string): IParsed<INodeLink> | null => {
   if (source[0] !== '<') {
     return null
   }
@@ -43,7 +43,7 @@ const captureAutolink = (source: string): Parsed<NodeLink> | null => {
 
 const testUrlStart = matches(/^http/)
 const execUrl = exec(/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/)
-const captureUrl = (source: string): Parsed<NodeLink> | null => {
+const captureUrl = (source: string): IParsed<INodeLink> | null => {
   if (!testUrlStart(source)) {
     return null
   }
@@ -77,26 +77,40 @@ const fixLink = (input: string) => {
   let parenLevel = 0
   let result = ''
   for (let i = 0; i < input.length; i += 1) {
-    if (input[i] === ')' && parenLevel === 0) break
-    if (input[i] === '(') parenLevel++
-    if (input[i] === ')') parenLevel--
+    if (input[i] === ')' && parenLevel === 0) {
+      break
+    }
+
+    if (input[i] === '(') {
+      parenLevel++
+    }
+
+    if (input[i] === ')') {
+      parenLevel--
+    }
+
     result = result + input[i]
   }
 
   return [result, input.substring(result.length)]
 }
 
-const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | NodeImage> | null => {
+const captureLink = (source: string, inlineLexer: ITokenizer): IParsed<INodeLink | INodeImage> | null => {
   if (source[0] !== '[' && source[0] !== '!') {
     return null
   }
 
   const result = execLink(source)
-  let token: NodeLink | NodeImage
+  let token: INodeLink | INodeImage
   if (!result) {
-    return null  }
+    return null
+  }
 
-  let capture = result[0];  const text = result[1];  let href = result[2];  const title = result[3]
+  let capture = result[0]
+  const text = result[1]
+  let href = result[2]
+  const title = result[3]
+
   if (result[4]) {
     const fixedLink = fixLink(result[4])
     href = fixedLink[0]
@@ -126,7 +140,7 @@ const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | 
     newSource: source.substring(capture.length)
   }
 }
-const captureLinks = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | NodeImage> | null =>
+const captureLinks = (source: string, inlineLexer: ITokenizer): IParsed<INodeLink | INodeImage> | null =>
   captureAutolink(source) || captureUrl(source) || captureLink(source, inlineLexer)
 
 export { captureLinks }

@@ -1,9 +1,9 @@
 import { exec } from 'utils'
 
-import { NodeText, Parsed } from 'models'
+import { INodeText, IParsed } from 'models'
 
 const execEscape = exec(/^\\([\\`*{}[\]()#+\-.!_>~|])/)
-const captureEscape = (source: string): Parsed<NodeText> | null => {
+const captureEscape = (source: string): IParsed<INodeText> | null => {
   if (source[0] !== '\\') {
     return null
   }

@@ -1,10 +1,10 @@
 import { exec } from 'utils'
 
-import { Parsed, NodeHR } from 'models'
+import { INodeHR, IParsed } from 'models'
 
 const execHR = exec(/^ *(?:\*{3,}|-{3,}|_{3,}) *(?:\n+|$)/)
 
-const captureHR = (source: string): Parsed<NodeHR> | null => {
+const captureHR = (source: string): IParsed<INodeHR> | null => {
   const result = execHR(source)
 
   if (!result) {

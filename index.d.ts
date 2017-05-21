@@ -1,60 +1,60 @@
 import {
-  NodeSpace,
-  NodeText,
-  NodeStrong,
-  NodeEm,
-  NodeStrikethrough,
-  NodeCode,
-  NodeLineBreak,
-  NodeLink,
-  NodeImage,
-  NodeHeading,
-  NodeBlockquote,
-  NodeParagraph,
-  NodeCodeBlock,
-  NodeHR,
-  NodeTable,
-  NodeListItem,
-  NodeList,
-  NodeItem,
-  Tokenizer,
-  Parsed
+  INodeSpace,
+  INodeText,
+  INodeStrong,
+  INodeEm,
+  INodeStrikethrough,
+  INodeCode,
+  INodeLineBreak,
+  INodeLink,
+  INodeImage,
+  INodeHeading,
+  INodeBlockquote,
+  INodeParagraph,
+  INodeCodeBlock,
+  INodeHR,
+  INodeTable,
+  INodeListItem,
+  INodeList,
+  INodeItem,
+  ITokenizer,
+  IParsed
 } from './src/models'
 
-type InlineParser = (source: string, inlineLexer?: Tokenizer) => Parsed<NodeItem>
-type BlockParser = (source: string, blockLexer?: Tokenizer, inlineLexer?: Tokenizer) => Parsed<NodeItem>
+type InlineParser = (source: string, inlineLexer?: ITokenizer) => IParsed<INodeItem>
+type BlockParser = (source: string, blockLexer?: ITokenizer, inlineLexer?: ITokenizer) => IParsed<INodeItem>
 
 interface MDJ {
-  parse: (source: string) => NodeItem[]
+  parse: (source: string) => INodeItem[]
   useInlineParser: (parser: InlineParser, priority: number) => MDJ
   useBlockParser: (parser: BlockParser, priority: number) => MDJ
 }
 
 declare const mdj: () => MDJ
-declare const parse: (source: string) => NodeItem[]
+declare const parse: (source: string) => INodeItem[]
 
 export default mdj
 export {
   parse,
-  NodeSpace,
-  NodeText,
-  NodeStrong,
-  NodeEm,
-  NodeStrikethrough,
-  NodeCode,
-  NodeLineBreak,
-  NodeLink,
-  NodeImage,
-  NodeHeading,
-  NodeBlockquote,
-  NodeParagraph,
-  NodeCodeBlock,
-  NodeHR,
-  NodeTable,
-  NodeListItem,
-  NodeList,
-  NodeItem,
-  Tokenizer,
-  Parsed,
+  INodeSpace,
+  INodeText,
+  INodeStrong,
+  INodeEm,
+  INodeStrikethrough,
+  INodeCode,
+  INodeLineBreak,
+  INodeLink,
+  INodeImage,
+  INodeHeading,
+  INodeBlockquote,
+  INodeParagraph,
+  INodeCodeBlock,
+  INodeHR,
+  INodeTable,
+  INodeListItem,
+  INodeList,
+  INodeItem,
+  ITokenizer,
+  IParsed,
   MDJ
 }

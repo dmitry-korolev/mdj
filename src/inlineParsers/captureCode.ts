@@ -1,9 +1,9 @@
 import { exec } from 'utils'
 
-import { NodeCode, Parsed } from 'models'
+import { INodeCode, IParsed } from 'models'
 
 const execCode = exec(/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/)
-const captureCode = (source: string): Parsed<NodeCode> | null => {
+const captureCode = (source: string): IParsed<INodeCode> | null => {
   if (source[0] !== '`') {
     return null
   }
