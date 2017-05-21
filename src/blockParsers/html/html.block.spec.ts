@@ -29,7 +29,7 @@ line 4
 
 describe('Block level HTML', () => {
   it('block', () => {
-    testCases.forEach(test => {
+    testCases.forEach((test) => {
       expect(parse(test)).to.eql([
         {
           type: 'html',

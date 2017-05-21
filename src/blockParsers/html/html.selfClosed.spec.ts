@@ -16,7 +16,7 @@ const testCases = [
 
 describe('HTML self-closed tags', () => {
   it('hr', () => {
-    testCases.forEach(test => {
+    testCases.forEach((test) => {
       expect(parse(test)).to.eql([
         {
           type: 'html',

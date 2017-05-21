@@ -10,7 +10,7 @@
     "prebuild": "npm run lint && npm test",
     "build": "rollup -c",
     "prepublish": "npm run build",
-    "lint": "tslint \"src/**/**.ts*\" --type-check --fix --project tsconfig.json --exclude=\"src/**/*.spec.ts*\""
+    "lint": "tslint \"src/**/**.ts*\" --type-check --fix --project tsconfig.json"
   },
   "author": "Dmitry Korolev <dmitry@korolev.dk>",
   "license": "MIT",

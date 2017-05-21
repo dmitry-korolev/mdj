@@ -6,7 +6,7 @@ const { parse } = MDJ({
 })
 
 const simple = '<!-- single line -->'
-const multiline = `<!-- 
+const multiline = `<!--
   multiline -->`
 
 describe('HTML comments', () => {

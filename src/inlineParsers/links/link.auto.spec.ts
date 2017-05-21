@@ -5,7 +5,7 @@ const { parse } = MDJ()
 
 const autoLink = '<http://example.com>'
 const autoLinkText = 'an autolink http://example.com'
-const toughText = 'inside of brackets [http://example.com], inside of braces {http://example.com},  inside of parentheses (http://example.com)'
+const toughText = 'inside of brackets [http://example.com], inside of braces {http://example.com},  inside of parentheses (http://example.com)' // tslint:disable-line max-line-length
 const trailing = 'trailing slash http://example.com/ and http://example.com/path/'
 
 describe('Auto linking', () => {
