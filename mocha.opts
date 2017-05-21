@@ -2,4 +2,7 @@
 --require tsconfig-paths/register
 --reporter dot
 --watch-extensions ts
+--require source-map-support/register
+--full-trace
+--bail
 src/**/*.spec.ts

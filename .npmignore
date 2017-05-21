@@ -1,6 +1,0 @@
-.idea
-/node_modules
-/test
-mocha.opts
-tsconfig.json
-rollup.config.js
