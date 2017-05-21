@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { MDJ } from 'core/MDJ'
 
-const {parse} = MDJ()
+const { parse } = MDJ()
 
 const inlineLink = '[link](http://example.com)'
 const parenLink = '[link](/url-(parentheses)) with parentheses in URL '
@@ -14,15 +14,15 @@ describe('Auto links', () => {
   it('inline link', () => {
     expect(parse(inlineLink)).to.eql([
       {
-        'type': 'paragraph',
-        'children': [
+        type: 'paragraph',
+        children: [
           {
-            'type': 'link',
-            'href': 'http://example.com',
-            'children': [
+            type: 'link',
+            href: 'http://example.com',
+            children: [
               {
-                'type': 'text',
-                'value': 'link'
+                type: 'text',
+                value: 'link'
               }
             ]
           }
@@ -34,21 +34,21 @@ describe('Auto links', () => {
   it('inline link with parenthesis in url', () => {
     expect(parse(parenLink)).to.eql([
       {
-        'type': 'paragraph',
-        'children': [
+        type: 'paragraph',
+        children: [
           {
-            'type': 'link',
-            'href': '/url-(parentheses)',
-            'children': [
+            type: 'link',
+            href: '/url-(parentheses)',
+            children: [
               {
-                'type': 'text',
-                'value': 'link'
+                type: 'text',
+                value: 'link'
               }
             ]
           },
           {
-            'type': 'text',
-            'value': ' with parentheses in URL '
+            type: 'text',
+            value: ' with parentheses in URL '
           }
         ]
       }
@@ -58,25 +58,25 @@ describe('Auto links', () => {
   it('inline link inside parenthesis', () => {
     expect(parse(inParenLink)).to.eql([
       {
-        'type': 'paragraph',
-        'children': [
+        type: 'paragraph',
+        children: [
           {
-            'type': 'text',
-            'value': '('
+            type: 'text',
+            value: '('
           },
           {
-            'type': 'link',
-            'href': '/index.php',
-            'children': [
+            type: 'link',
+            href: '/index.php',
+            children: [
               {
-                'type': 'text',
-                'value': 'link'
+                type: 'text',
+                value: 'link'
               }
             ]
           },
           {
-            'type': 'text',
-            'value': ') in parentheses'
+            type: 'text',
+            value: ') in parentheses'
           }
         ]
       }
@@ -86,15 +86,15 @@ describe('Auto links', () => {
   it('markdown inside link', () => {
     expect(parse(codeLink)).to.eql([
       {
-        'type': 'paragraph',
-        'children': [
+        type: 'paragraph',
+        children: [
           {
-            'type': 'link',
-            'href': 'http://example.com',
-            'children': [
+            type: 'link',
+            href: 'http://example.com',
+            children: [
               {
-                'type': 'code',
-                'value': 'link'
+                type: 'code',
+                value: 'link'
               }
             ]
           }
@@ -106,16 +106,16 @@ describe('Auto links', () => {
   it('link with image', () => {
     expect(parse(image)).to.eql([
       {
-        'type': 'paragraph',
-        'children': [
+        type: 'paragraph',
+        children: [
           {
-            'type': 'link',
-            'href': 'http://example.com',
-            'children': [
+            type: 'link',
+            href: 'http://example.com',
+            children: [
               {
-                'type': 'image',
-                'src': 'http://parsedown.org/md.png',
-                'alt': 'MD Logo'
+                type: 'image',
+                src: 'http://parsedown.org/md.png',
+                alt: 'MD Logo'
               }
             ]
           }
@@ -127,20 +127,20 @@ describe('Auto links', () => {
   it('link with image and text', () => {
     expect(parse(imageAndText)).to.eql([
       {
-        'type': 'paragraph',
-        'children': [
+        type: 'paragraph',
+        children: [
           {
-            'type': 'link',
-            'href': 'http://example.com',
-            'children': [
+            type: 'link',
+            href: 'http://example.com',
+            children: [
               {
-                'type': 'image',
-                'src': 'http://parsedown.org/md.png',
-                'alt': 'MD Logo'
+                type: 'image',
+                src: 'http://parsedown.org/md.png',
+                alt: 'MD Logo'
               },
               {
-                'type': 'text',
-                'value': ' and text'
+                type: 'text',
+                value: ' and text'
               }
             ]
           }

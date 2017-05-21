@@ -42,7 +42,7 @@ const captureAutolink = (source: string): IParsed<INodeLink> | null => {
 }
 
 const testUrlStart = matches(/^http/)
-const execUrl = exec(/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/)
+const execUrl = exec(/^(https?:\/\/[^\s<]+[^<.,:;"')}\]\s])/)
 const captureUrl = (source: string): IParsed<INodeLink> | null => {
   if (!testUrlStart(source)) {
     return null

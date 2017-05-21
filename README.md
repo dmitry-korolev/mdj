@@ -40,7 +40,7 @@ Each parser receives one parameter - `source`, which is, basically, non-parsed p
 
 ### Roadmap to 1.0.0:
 Support:
-* [ ] Reference links
+* [ ] Reference links and images
 * [x] HTML
 * [ ] Checkbox lists
 
