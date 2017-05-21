@@ -95,25 +95,30 @@ export interface INodeHTML {
   value: string
 }
 
-export type INodeItem =
+export type IBlockNodes =
   INodeBlockquote |
-  INodeCode |
   INodeCodeBlock |
-  INodeEm |
   INodeHeading |
   INodeHR |
   INodeHTML |
-  INodeImage |
-  INodeLineBreak |
-  INodeLink |
   INodeList |
   INodeListItem |
   INodeParagraph |
   INodeSpace |
+  INodeTable
+
+export type IInlineNodes =
+  INodeCode |
+  INodeEm |
+  INodeImage |
+  INodeHTML |
+  INodeLineBreak |
+  INodeLink |
   INodeStrikethrough |
   INodeStrong |
-  INodeTable |
   INodeText
+
+export type INodeItem = IBlockNodes | IInlineNodes
 
 export interface IParsed<T> {
   token: T
@@ -123,3 +128,7 @@ export interface IParsed<T> {
 // TODO: type tokenizer
 export type ITokenizer = (source: string) => INodeItem[]
 export type IParser = (source: string, blockLexer?: ITokenizer, inlineLexer?: ITokenizer) => IParsed<INodeItem> | null
+
+export interface IMDJOptions {
+  html?: boolean
+}

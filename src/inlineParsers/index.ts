@@ -1,6 +1,7 @@
 export { captureCode } from './captureCode'
 export { captureEm } from './captureEm'
 export { captureEscape } from './captureEscape'
+export { captureInlineHTML } from './html/captureInlineHTML'
 export { captureLineBreak } from './captureLinebreak'
 export { captureLinks } from './links/captureLinks'
 export { captureStrikethrough } from './captureStrikethrough'

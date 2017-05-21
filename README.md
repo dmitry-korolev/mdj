@@ -20,6 +20,13 @@ import source from 'source.md'
 const parsedSource = parse(source) // Note that this is less performant.
 ```
 
+MDJ constructor accepts an optional settings argument:
+```
+interface IMDJOptions {
+  html?: boolean // enables HTML support, false by default
+}
+```
+
 ### Adding new parser rules
 Parsers are divided into two parts:
 1. Block parsers, e.g.: paragraph, lists, tables, block quotes etc.

@@ -1,60 +1,18 @@
 import {
-  INodeSpace,
-  INodeText,
-  INodeStrong,
-  INodeEm,
-  INodeStrikethrough,
-  INodeCode,
-  INodeLineBreak,
-  INodeLink,
-  INodeImage,
-  INodeHeading,
-  INodeBlockquote,
-  INodeParagraph,
-  INodeCodeBlock,
-  INodeHR,
-  INodeTable,
-  INodeListItem,
-  INodeList,
+  IMDJOptions,
   INodeItem,
-  ITokenizer,
-  IParsed
+  IParsed,
+  ITokenizer
 } from './src/models'
 
-type InlineParser = (source: string, inlineLexer?: ITokenizer) => IParsed<INodeItem>
-type BlockParser = (source: string, blockLexer?: ITokenizer, inlineLexer?: ITokenizer) => IParsed<INodeItem>
+type IInlineParser = (source: string, inlineLexer?: ITokenizer) => IParsed<INodeItem>
+type IBlockParser = (source: string, blockLexer?: ITokenizer, inlineLexer?: ITokenizer) => IParsed<INodeItem>
 
-interface MDJ {
+interface IMDJ {
   parse: (source: string) => INodeItem[]
-  useInlineParser: (parser: InlineParser, priority: number) => MDJ
-  useBlockParser: (parser: BlockParser, priority: number) => MDJ
+  useIInlineParser: (parser: IInlineParser, priority: number) => IMDJ
+  useIBlockParser: (parser: IBlockParser, priority: number) => IMDJ
 }
 
-declare const mdj: () => MDJ
+declare const mdj: (options?: IMDJOptions) => IMDJ
 declare const parse: (source: string) => INodeItem[]
-
-export default mdj
-export {
-  parse,
-  INodeSpace,
-  INodeText,
-  INodeStrong,
-  INodeEm,
-  INodeStrikethrough,
-  INodeCode,
-  INodeLineBreak,
-  INodeLink,
-  INodeImage,
-  INodeHeading,
-  INodeBlockquote,
-  INodeParagraph,
-  INodeCodeBlock,
-  INodeHR,
-  INodeTable,
-  INodeListItem,
-  INodeList,
-  INodeItem,
-  ITokenizer,
-  IParsed,
-  MDJ
-}

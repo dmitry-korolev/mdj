@@ -15,6 +15,7 @@ import {
   captureCode,
   captureEm,
   captureEscape,
+  captureInlineHTML,
   captureLineBreak,
   captureLinks,
   captureStrikethrough,
@@ -22,14 +23,19 @@ import {
   captureText
 } from 'inlineParsers'
 
-import { INodeItem, IParsed, IParser, ITokenizer } from 'models'
+import { IMDJOptions, INodeItem, IParsed, IParser, ITokenizer } from 'models'
 
-type ParsersList = Array<{ parser: IParser, priority: number }>
+type IParsersList = Array<{ parser: IParser, priority: number }>
 
-const MDJ = () => {
+const defaultOptions: IMDJOptions = {
+  html: false
+}
+
+const MDJ = (_options?: IMDJOptions) => {
+  const options = Object.assign({}, defaultOptions, _options)
   const parsers: {
-    block: ParsersList
-    inline: ParsersList
+    block: IParsersList
+    inline: IParsersList
   } = {
     block: [
       { parser: captureNewLine, priority: 1000 },
@@ -39,7 +45,6 @@ const MDJ = () => {
       { parser: captureCodeBlock, priority: 600 },
       { parser: captureTable, priority: 500 },
       { parser: captureList, priority: 400 },
-      { parser: captureHTML, priority: 300 },
       { parser: captureParagraph, priority: 0 }
     ],
     inline: [
@@ -52,6 +57,11 @@ const MDJ = () => {
       { parser: captureLineBreak, priority: 400 },
       { parser: captureText, priority: 0 }
     ]
+  }
+
+  if (options.html) {
+    addParser('block', captureHTML, 200)
+    addParser('inline', captureInlineHTML, 200)
   }
 
   const blockLexer: ITokenizer = lexer('block')
