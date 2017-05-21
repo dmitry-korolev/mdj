@@ -3,3 +3,4 @@
 --reporter dot
 --watch-extensions ts
 src/**/*.spec.ts
+spec/**/*.spec.ts

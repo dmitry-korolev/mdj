@@ -96,16 +96,18 @@ const captureLink = (source: string, inlineLexer: Tokenizer): Parsed<NodeLink | 
     token = {
       type: 'image',
       src: href,
-      alt: text,
-      title
+      alt: text
     }
   } else {
     token = {
       type: 'link',
       href,
-      title,
       children: inlineLexer(text)
     }
+  }
+
+  if (title) {
+    token.title = title
   }
 
   return {

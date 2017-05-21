@@ -1,4 +1,4 @@
-import { exec, matches, replace, compose, map, split } from 'utils'
+import { exec, matches, replace, compose, map, split, trim } from 'utils'
 
 import { Parsed, NodeTable, Tokenizer, NodeItem } from 'models'
 
@@ -12,8 +12,24 @@ const splitByLineBreak = split('\n')
 const isRight = matches(/^ *-+: *$/)
 const isCenter = matches(/^ *:-+: *$/)
 
-const getTableHeader = (source: string): string[] => removeHeaderBounds(source).split(rowSep).map(item => item.trim())
-const getTableRow = compose(split(rowSep), removeCellBounds)
+const splitRow = (input: string) => {
+  const result: string[] = []
+  let cell = 0
+
+  for(let i = 0; i < input.length; i += 1) {
+    if (input[i] === '|' && input[i - 1] !== '`' && input[i - 1] !== '\\') {
+      cell++
+      continue
+    }
+    result[cell] = (result[cell] || '') + input[i]
+  }
+
+  return map(trim, result)
+}
+
+const getTableHeader = (lexer: Tokenizer, source: string): NodeItem[][] =>
+  compose(map(lexer), splitRow, removeHeaderBounds)(source)
+const getTableRow = compose(splitRow, removeCellBounds)
 const getCellAlign = (input: string): string | null => {
   if (isRight(input)) {
     return 'right'
@@ -23,7 +39,7 @@ const getCellAlign = (input: string): string | null => {
     return 'left'
   }
 }
-const getTableAlign = (source: string): Array<string | null> => removeRowBounds(source).split(rowSep).map(getCellAlign)
+const getTableAlign = compose(map(getCellAlign), split(rowSep), removeRowBounds)
 const getNormalCells = (lexer: Tokenizer, cells: string): NodeItem[][][] =>
   compose(map(compose(map(lexer), getTableRow)), splitByLineBreak, removeLastBounds)(cells)
 const getNPCells = (lexer: Tokenizer, cells: string): NodeItem[][][] =>
@@ -57,7 +73,7 @@ const captureTable = (source: string, _: any, inlineLexer: Tokenizer): Parsed<No
   return {
     token: {
       type: 'table',
-      header: getTableHeader(header),
+      header: getTableHeader(inlineLexer, header),
       align: getTableAlign(align),
       cells: isNP ? getNPCells(inlineLexer, cells) : getNormalCells(inlineLexer, cells)
     },

@@ -42,7 +42,7 @@ export interface NodeImage {
   type: 'image'
   src: string
   alt: string
-  title: string
+  title?: string
 }
 
 export interface NodeHeading {
@@ -73,7 +73,7 @@ export interface NodeHR {
 
 export interface NodeTable {
   type: 'table'
-  header: string[]
+  header: NodeItem[][]
   align: Array<string | null>
   cells: NodeItem[][][] // rows -> cells -> NodeItem[]
 }
