@@ -1,4 +1,5 @@
 ## MDJ - Markdown (GFM) to JSON compiler
+[![npm](https://img.shields.io/npm/v/mdj.svg)](https://www.npmjs.com/package/mdj) [![Travis](https://img.shields.io/travis/dmitry-korolev/mdj.svg)](https://travis-ci.org/dmitry-korolev/mdj/)
 
 ### Why
 In short, because sometimes you **don't** need HTML.
