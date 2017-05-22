@@ -63,7 +63,7 @@ export interface INodeParagraph {
 
 export interface INodeCodeBlock {
   type: 'codeblock'
-  language: string
+  language?: string
   value?: string
 }
 

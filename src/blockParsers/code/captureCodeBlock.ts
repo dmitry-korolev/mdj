@@ -7,10 +7,6 @@ const clearCode = replace(/^ {4}/gm, '')
 const execCodeFence = exec(/^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/)
 
 const captureCodeNormal = (source: string): IParsed<INodeCodeBlock> | null => {
-  if (source[0] !== '`') {
-    return null
-  }
-
   const result = execCodeNormal(source)
 
   if (!result) {
@@ -22,7 +18,6 @@ const captureCodeNormal = (source: string): IParsed<INodeCodeBlock> | null => {
   return {
     token: {
       type: 'codeblock',
-      language: '',
       value: clearCode(capture)
     },
     newSource: source.substring(capture.length)
@@ -30,6 +25,10 @@ const captureCodeNormal = (source: string): IParsed<INodeCodeBlock> | null => {
 }
 
 const captureCodeFence = (source: string): IParsed<INodeCodeBlock> | null => {
+  if (source[0] !== '`') {
+    return null
+  }
+
   const result = execCodeFence(source)
 
   if (!result) {
@@ -39,13 +38,17 @@ const captureCodeFence = (source: string): IParsed<INodeCodeBlock> | null => {
   const capture = result[0]
   const language = result[2]
   const value = result[3]
+  const token: INodeCodeBlock = {
+    type: 'codeblock',
+    value
+  }
+
+  if (language) {
+    token.language = language
+  }
 
   return {
-    token: {
-      type: 'codeblock',
-      language,
-      value
-    },
+    token,
     newSource: source.substring(capture.length)
   }
 }

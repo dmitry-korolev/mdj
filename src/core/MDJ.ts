@@ -42,9 +42,9 @@ const MDJ = (_options?: IMDJOptions) => {
       { parser: captureHeading, priority: 900 },
       { parser: captureHR, priority: 800 },
       { parser: captureBlockquote, priority: 700 },
-      { parser: captureCodeBlock, priority: 600 },
+      { parser: captureList, priority: 600 },
       { parser: captureTable, priority: 500 },
-      { parser: captureList, priority: 400 },
+      { parser: captureCodeBlock, priority: 400 },
       { parser: captureParagraph, priority: 0 }
     ],
     inline: [
@@ -53,8 +53,8 @@ const MDJ = (_options?: IMDJOptions) => {
       { parser: captureStrong, priority: 800 },
       { parser: captureEm, priority: 700 },
       { parser: captureStrikethrough, priority: 600 },
-      { parser: captureLinks, priority: 500 },
-      { parser: captureLineBreak, priority: 400 },
+      { parser: captureLineBreak, priority: 500 },
+      { parser: captureLinks, priority: 400 },
       { parser: captureText, priority: 0 }
     ]
   }
