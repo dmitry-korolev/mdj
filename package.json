@@ -2,8 +2,8 @@
   "name": "mdj",
   "version": "0.4.1",
   "description": "Markdown (GFM) to JSON converter",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "nyc mocha --opts mocha.opts",
     "test:auto": "mocha --opts mocha.opts --watch",
@@ -57,6 +57,10 @@
     "include": [
       "src/**/*.ts",
       "src/**/*.tsx"
+    ],
+    "exclude": [
+      "src/**/*.spec.ts",
+      "lib"
     ],
     "extension": [
       ".ts",

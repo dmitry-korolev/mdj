@@ -3,7 +3,7 @@ import {
   INodeItem,
   IParsed,
   ITokenizer
-} from './src/models'
+} from '../src/models'
 
 type IInlineParser = (source: string, inlineLexer?: ITokenizer) => IParsed<INodeItem>
 type IBlockParser = (source: string, blockLexer?: ITokenizer, inlineLexer?: ITokenizer) => IParsed<INodeItem>
