@@ -24,7 +24,7 @@ export default {
     {
       dest: pkg['main'],
       format: 'umd',
-      moduleName: 'example',
+      moduleName: 'MDJ',
       sourceMap: true,
       exports: 'named'
     }
