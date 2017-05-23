@@ -78,10 +78,10 @@ Each parser receives from one to three parameters - `source`, which is, basicall
 Parser should return null, if it did nothing, or an object, containing a new token, which will be added to JSON and a new source. See examples in `./src/parsers`.
 
 ### Roadmap to 1.0.0:
-Support:
-* [ ] Reference links and images
-* [x] HTML
-* [ ] Checkbox lists
+* [ ] Add support for reference links and images
+* [x] Add support for HTML
+* [ ] Add support for checkbox lists
+* [ ] Pass all tests
 
 Performance:
 * [ ] Add public benchmarks

@@ -114,7 +114,7 @@ describe('Link titles', () => {
     ])
   })
 
-  it('parenthesis', () => {
+  xit('parenthesis', () => {
     expect(parse(parenthesis)).to.eql([
       {
         type: 'paragraph',

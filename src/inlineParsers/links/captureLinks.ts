@@ -72,29 +72,7 @@ const captureUrl = (source: string): IParsed<INodeLink> | null => {
   }
 }
 
-const execLink = exec(/^!?\[(.*)\]\((?:([\S]*) *["'](.*)["']\)|(.*)(?: *\)))/)
-const fixLink = (input: string) => {
-  let parenLevel = 0
-  let result = ''
-  for (let i = 0; i < input.length; i += 1) {
-    if (input[i] === ')' && parenLevel === 0) {
-      break
-    }
-
-    if (input[i] === '(') {
-      parenLevel++
-    }
-
-    if (input[i] === ')') {
-      parenLevel--
-    }
-
-    result = result + input[i]
-  }
-
-  return [result, input.substring(result.length)]
-}
-
+const execLink = exec(/^!?\[((?:\[[^\]]*\]|[^[\]]|\](?=[^[]*\]))*)\]\(\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*\)/)
 const captureLink = (source: string, inlineLexer: ITokenizer): IParsed<INodeLink | INodeImage> | null => {
   if (source[0] !== '[' && source[0] !== '!') {
     return null
@@ -106,16 +84,10 @@ const captureLink = (source: string, inlineLexer: ITokenizer): IParsed<INodeLink
     return null
   }
 
-  let capture = result[0]
+  const capture = result[0]
   const text = result[1]
-  let href = result[2]
+  const href = result[2]
   const title = result[3]
-
-  if (result[4]) {
-    const fixedLink = fixLink(result[4])
-    href = fixedLink[0]
-    capture = fixedLink[1].length ? capture.slice(0, -fixedLink[1].length) : capture
-  }
 
   if (capture[0] === '!') {
     token = {

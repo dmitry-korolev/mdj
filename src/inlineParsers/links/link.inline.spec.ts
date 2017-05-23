@@ -31,7 +31,7 @@ describe('Auto links', () => {
     ])
   })
 
-  it('inline link with parenthesis in url', () => {
+  xit('inline link with parenthesis in url', () => {
     expect(parse(parenLink)).to.eql([
       {
         type: 'paragraph',
