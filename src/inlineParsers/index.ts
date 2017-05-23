@@ -1,4 +1,4 @@
-export { captureCode } from './captureCode'
+export { captureCode } from './code/captureCode'
 export { captureEm } from './captureEm'
 export { captureEscape } from './captureEscape'
 export { captureInlineHTML } from './html/captureInlineHTML'

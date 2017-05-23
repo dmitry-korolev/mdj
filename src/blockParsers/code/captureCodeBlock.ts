@@ -25,7 +25,7 @@ const captureCodeNormal = (source: string): IParsed<INodeCodeBlock> | null => {
 }
 
 const captureCodeFence = (source: string): IParsed<INodeCodeBlock> | null => {
-  if (source[0] !== '`') {
+  if (source[0] !== '`' && source[0] !== '~') {
     return null
   }
 
