@@ -34,10 +34,11 @@ const captureList = (source: string, tokenize: ITokenizer): IParsed<INodeList> |
   })
 
   const startToken = matchBullet(bull)
+
   const token: INodeList = {
     type: 'list',
-    ordered: !!startToken,
-    start: startToken && +startToken[1],
+    ordered: !!startToken.length,
+    start: startToken.length ? +startToken[1] : null,
     children: topItemsParsed
   }
 

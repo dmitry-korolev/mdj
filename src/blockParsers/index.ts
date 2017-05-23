@@ -1,4 +1,4 @@
-export { captureBlockquote } from './captureBlockquote'
+export { captureBlockquote } from './blockquote/captureBlockquote'
 export { captureCodeBlock } from './code/captureCodeBlock'
 export { captureHeading } from './headings/captureHeading'
 export { captureHR } from './captureHR'

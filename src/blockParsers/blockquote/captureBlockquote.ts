@@ -1,12 +1,13 @@
-import { exec, replace } from 'utils'
+import { exec, matches, replace } from 'utils'
 
 import { INodeBlockquote, INodeParagraph, IParsed, ITokenizer } from 'models'
 
 const execBlockquote =
-  exec(/^( *>[^\n]+(\n(?! *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*\n*)+/)
+  exec(/^( {0,3}>[^\n]+(\n(?! *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$))[^\n]+)*\n*)+/)
 const clearBlockquote = replace(/^ *> ?/gm, '')
+const probablyBlockquote = matches(/^ {0,3}>/)
 const captureBlockquote = (source: string, tokenize: ITokenizer): IParsed<INodeBlockquote> | null => {
-  if (source[0] !== '>') {
+  if (!probablyBlockquote(source)) {
     return null
   }
 

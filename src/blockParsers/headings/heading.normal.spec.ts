@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { MDJ } from 'core/MDJ'
 
-const {parse} = MDJ()
+const { parse } = MDJ()
 
 const h1 = '# h1'
 const h2 = '## h2'

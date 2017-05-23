@@ -2,7 +2,7 @@ import { exec, replace } from 'utils'
 
 import { INodeParagraph, IParsed, ITokenizer } from 'models'
 
-const execParagraph = exec(/^((?:[^\n]+\n?)+)\n*/)
+const execParagraph = exec(/^((?:[^\n]+\n?(?! {0,3}>))+)\n*/)
 const removeLastLineBreak = replace(/\n$/, ' ')
 
 const captureParagraph = (source: string, _: any, inlineLexer: ITokenizer): IParsed<INodeParagraph> | null => {
